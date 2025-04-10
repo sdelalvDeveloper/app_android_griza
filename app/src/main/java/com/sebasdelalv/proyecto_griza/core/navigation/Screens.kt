@@ -8,3 +8,6 @@ object Cover
 
 @Serializable
 object Login
+
+@Serializable
+object SignUp
