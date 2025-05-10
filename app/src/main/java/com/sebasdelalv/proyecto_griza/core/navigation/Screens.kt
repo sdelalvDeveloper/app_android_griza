@@ -17,3 +17,6 @@ object Menu
 
 @Serializable
 object Perfil
+
+@Serializable
+object Cuenta

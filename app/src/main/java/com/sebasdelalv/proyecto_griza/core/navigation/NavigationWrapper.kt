@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.cuenta.CuentaScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuScreen
@@ -30,11 +31,26 @@ fun NavigationWrapper(loginViewModel: LoginViewModel, signupViewModel: SignupVie
         }
 
         composable<Menu> {
-            MenuScreen(menuViewModel) { navController.navigate(Login) }
+            MenuScreen(
+                viewModel = menuViewModel,
+                navigateToLogin = { navController.navigate(Login) },
+                navigateToPerfil = { navController.navigate(Perfil) },
+                navigateToMenu = { navController.navigate(Menu) }
+            )
         }
 
         composable<Perfil> {
-            PerfilScreen()
+            PerfilScreen(
+                navigateToCuenta = { navController.navigate(Cuenta) },
+                navigateToMenu = { navController.navigate(Menu) }
+            )
+        }
+
+        composable<Cuenta> {
+            CuentaScreen(
+                navigateToPerfil = { navController.navigate(Perfil) },
+                navigateToMenu = { navController.navigate(Menu) }
+            )
         }
     }
 }

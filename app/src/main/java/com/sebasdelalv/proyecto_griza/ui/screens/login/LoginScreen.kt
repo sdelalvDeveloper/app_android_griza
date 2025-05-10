@@ -5,6 +5,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -117,7 +118,7 @@ fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
                         text = "Registrarme",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.04f).sp
+                        fontSize = (screenWidth * 0.15f).sp
                     )
                 }
             }

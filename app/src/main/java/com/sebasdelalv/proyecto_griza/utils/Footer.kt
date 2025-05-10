@@ -12,14 +12,16 @@ import androidx.compose.ui.graphics.Color
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 
 @Composable
-fun MyFooter() {
+fun MyFooter(
+    navigateToMenu: () -> Unit
+) {
     BottomAppBar(
         containerColor = Principal,
         contentColor = Color.Black,
         modifier = Modifier.fillMaxWidth(),
         content = {
             IconNavigation(
-                onClick = { /* Navegar a Inicio */ },
+                onClick = { navigateToMenu() },
                 modifier = Modifier.weight(1f),
                 icon = Icons.Default.Home,
                 text = "Inicio"
@@ -33,7 +35,7 @@ fun MyFooter() {
             )
 
             IconNavigation(
-                onClick = { /* Navegar a Perfil */ },
+                onClick = { /* Navegar a nosotros*/ },
                 modifier = Modifier.weight(1f),
                 icon = Icons.Default.Place,
                 text = "Nosotros"

@@ -17,26 +17,22 @@ import kotlinx.coroutines.delay
 
 @Composable
 fun CarruselDeImagenes(imagenes: List<Int>, height: Dp) {
-    // Añadir una imagen duplicada al final para bucle visual
-    val loopedImages = remember { imagenes + imagenes.first() }
-
     val pagerState = rememberPagerState(
-        initialPage = 0,
-        pageCount = { loopedImages.size }
+        initialPage = 0,  // Empezamos en la primera imagen
+        pageCount = {imagenes.size}  // Número total de imágenes
     )
 
+    // Deslizar automáticamente cada 4 segundos
     LaunchedEffect(pagerState) {
         while (true) {
-            delay(4000)
-            val nextPage = pagerState.currentPage + 1
+            delay(4000)  // Espera 4 segundos antes de avanzar
+            val nextPage = pagerState.currentPage + 1  // Avanza a la siguiente página
 
-            if (nextPage < loopedImages.size) {
-                pagerState.animateScrollToPage(nextPage)
-            }
-
-            // Si llega al final, salta sin animación a la primera
-            if (nextPage == loopedImages.lastIndex) {
-                pagerState.scrollToPage(0)
+            if (nextPage < imagenes.size) {
+                pagerState.animateScrollToPage(nextPage)  // Avanza con animación
+            } else {
+                // Cuando lleguemos al final, ir a la primera imagen sin animación
+                pagerState.scrollToPage(0)  // Cambia sin animación
             }
         }
     }
@@ -49,7 +45,7 @@ fun CarruselDeImagenes(imagenes: List<Int>, height: Dp) {
                 .height(height)
         ) { page ->
             Image(
-                painter = painterResource(id = loopedImages[page]),
+                painter = painterResource(id = imagenes[page]),
                 contentDescription = "Imagen $page",
                 contentScale = ContentScale.Fit,
                 modifier = Modifier

@@ -35,7 +35,9 @@ import com.sebasdelalv.proyecto_griza.utils.MyFooter
 @Composable
 fun MenuScreen(
     viewModel: MenuViewModel,
-    navigateToLogin: () -> Unit
+    navigateToLogin: () -> Unit,
+    navigateToPerfil: () -> Unit,
+    navigateToMenu: () -> Unit
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -65,7 +67,6 @@ fun MenuScreen(
                                 modifier = Modifier.size(screenWidth * 0.08f)
                             )
                         }
-
                         DropdownMenu(
                             expanded = expanded,
                             onDismissRequest = { expanded = false }
@@ -74,7 +75,7 @@ fun MenuScreen(
                                 text = { Text("Perfil") },
                                 onClick = {
                                     expanded = false
-                                    // Acción: navegar al perfil
+                                    navigateToPerfil()
                                 }
                             )
                             DropdownMenuItem(
@@ -100,7 +101,7 @@ fun MenuScreen(
             )
         },
         bottomBar = {
-            MyFooter() // Puedes poner tu footer aquí
+            MyFooter(navigateToMenu)
         }
     ) { innerPadding ->
         Column(
@@ -108,11 +109,8 @@ fun MenuScreen(
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Spacer(modifier = Modifier.weight(0.1f))
             CarruselDeImagenes(imagenes, screenWidth * 0.6f)
-            Spacer(modifier = Modifier.weight(0.1f))
         }
     }
-
 }
 
