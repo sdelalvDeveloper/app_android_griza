@@ -5,7 +5,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -18,23 +17,28 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
+import com.sebasdelalv.proyecto_griza.data.session.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel) {
+fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
+    val context = LocalContext.current
+    val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
@@ -49,7 +53,7 @@ fun LoginScreen(viewModel: LoginViewModel) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.15f)
+                    .fillMaxHeight(0.2f)
                     .background(Principal),
                 verticalArrangement = Arrangement.SpaceAround,
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -62,25 +66,13 @@ fun LoginScreen(viewModel: LoginViewModel) {
                         .fillMaxWidth(0.45f)
                         .fillMaxHeight(0.15f)
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
+                Text(
+                    text = "Accede a tu cuenta griza",
+                    fontFamily = Quicksand,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = (screenWidth * 0.06f).sp
+                )
 
-                    Text(
-                        text = "Login",
-                        fontFamily = Quicksand,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.05f).sp
-                    )
-                    Text(
-                        text = "Sign in",
-                        fontFamily = Quicksand,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = (screenWidth * 0.05f).sp,
-                        color = Color.Gray
-                    )
-                }
             }
             Column(
                 modifier = Modifier
@@ -104,6 +96,25 @@ fun LoginScreen(viewModel: LoginViewModel) {
                 ) {
                     Text(
                         text = "Iniciar sesión",
+                        fontFamily = Quicksand,
+                        fontWeight = FontWeight.Bold,
+                        fontSize = (screenWidth * 0.04f).sp
+                    )
+                }
+                Spacer(modifier = Modifier.fillMaxHeight(0.1f))
+                Button(
+                    onClick = {
+                        viewModel.clearFields()
+                        navigateToSignup()
+                        },
+                    modifier = Modifier.testTag("buttonRegister"),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = Principal,
+                        contentColor = Color.Black
+                    )
+                ) {
+                    Text(
+                        text = "Registrarme",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
                         fontSize = (screenWidth * 0.04f).sp

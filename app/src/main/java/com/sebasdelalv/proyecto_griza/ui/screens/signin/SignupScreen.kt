@@ -2,7 +2,9 @@ package com.sebasdelalv.proyecto_griza.ui.screens.signin
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,8 +12,13 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +32,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
@@ -32,7 +40,7 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
-fun SignupScreen(viewModel: SignupViewModel) {
+fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
     val username by viewModel.username.collectAsState()
     val email by viewModel.email.collectAsState()
@@ -47,42 +55,49 @@ fun SignupScreen(viewModel: SignupViewModel) {
                 .padding(innerPadding)
                 .fillMaxSize()
         ) {
-            Column(
+            Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .fillMaxHeight(0.15f)
-                    .background(Principal),
-                verticalArrangement = Arrangement.SpaceAround,
-                horizontalAlignment = Alignment.CenterHorizontally
+                    .fillMaxHeight(0.2f)
+                    .background(Principal)
             ) {
-                Image(
-                    painter = painterResource(id = R.drawable.griza_negro_sin_fondo),
-                    contentDescription = "Logo griza estudio",
-                    contentScale = ContentScale.Fit,
+                // Flecha de retroceso
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Volver atrás",
                     modifier = Modifier
-                        .fillMaxWidth(0.45f)
-                        .fillMaxHeight(0.15f)
+                        .align(Alignment.CenterStart)
+                        .padding(start = 16.dp)
+                        .size(30.dp)
+                        .clickable {
+                            navigateToLogin()
+                        }
                 )
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround
-                ) {
 
-                    Text(
-                        text = "Login",
-                        fontFamily = Quicksand,
-                        fontWeight = FontWeight.SemiBold,
-                        fontSize = (screenWidth * 0.05f).sp,
-                        color = Color.Gray
+                // Contenido principal (logo + texto)
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    verticalArrangement = Arrangement.SpaceAround,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.griza_negro_sin_fondo),
+                        contentDescription = "Logo griza estudio",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth(0.45f)
+                            .fillMaxHeight(0.15f)
                     )
                     Text(
-                        text = "Sign in",
+                        text = "Regístrate en griza",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.05f).sp
+                        fontSize = (screenWidth * 0.06f).sp
                     )
                 }
             }
+
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

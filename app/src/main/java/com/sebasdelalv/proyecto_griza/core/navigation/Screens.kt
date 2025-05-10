@@ -11,3 +11,9 @@ object Login
 
 @Serializable
 object SignUp
+
+@Serializable
+object Menu
+
+@Serializable
+object Perfil

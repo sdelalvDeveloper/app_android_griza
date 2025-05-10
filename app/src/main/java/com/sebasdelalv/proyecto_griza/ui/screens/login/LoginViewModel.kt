@@ -40,4 +40,10 @@ class LoginViewModel: ViewModel() {
     fun onLoginClick() {
         // Lógica de login (llamar a un UseCase, etc.)
     }
+
+    // Limpia los campos
+    fun clearFields() {
+        _username.value = ""
+        _password.value = ""
+    }
 }

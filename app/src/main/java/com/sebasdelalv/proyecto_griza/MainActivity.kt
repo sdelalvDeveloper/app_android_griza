@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sebasdelalv.proyecto_griza.core.navigation.NavigationWrapper
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.theme.Proyecto_grizaTheme
 
@@ -18,7 +19,8 @@ class MainActivity : ComponentActivity() {
             Proyecto_grizaTheme {
                 val loginViewModel: LoginViewModel = viewModel()
                 val signupViewModel: SignupViewModel = viewModel()
-                NavigationWrapper(loginViewModel, signupViewModel)
+                val menuViewModel: MenuViewModel = viewModel()
+                NavigationWrapper(loginViewModel, signupViewModel, menuViewModel)
             }
         }
     }

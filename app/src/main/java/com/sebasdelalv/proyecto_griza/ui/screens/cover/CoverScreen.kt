@@ -1,4 +1,4 @@
-package com.sebasdelalv.proyecto_griza.ui.screens
+package com.sebasdelalv.proyecto_griza.ui.screens.cover
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
