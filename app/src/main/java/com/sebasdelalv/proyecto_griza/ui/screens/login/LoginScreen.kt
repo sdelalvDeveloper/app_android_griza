@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.session.SessionManager
@@ -73,8 +75,11 @@ fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
                     fontWeight = FontWeight.Bold,
                     fontSize = (screenWidth * 0.06f).sp
                 )
-
             }
+            HorizontalDivider(
+                color = Color.Black,
+                thickness = (screenWidth * 0.004f).dp
+            )
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

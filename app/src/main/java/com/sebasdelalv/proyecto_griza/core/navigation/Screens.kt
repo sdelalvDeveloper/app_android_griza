@@ -20,3 +20,6 @@ object Perfil
 
 @Serializable
 object Cuenta
+
+@Serializable
+object Talleres

@@ -18,6 +18,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -97,6 +98,10 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                     )
                 }
             }
+            HorizontalDivider(
+                color = Color.Black,
+                thickness = (screenWidth * 0.004f).dp
+            )
 
             Column(
                 modifier = Modifier

@@ -13,7 +13,8 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 
 @Composable
 fun MyFooter(
-    navigateToMenu: () -> Unit
+    navigateToMenu: () -> Unit,
+    navigateToTalleres: () -> Unit
 ) {
     BottomAppBar(
         containerColor = Principal,
@@ -28,7 +29,7 @@ fun MyFooter(
             )
 
             IconNavigation(
-                onClick = { /* Navegar a Buscar */ },
+                onClick = { navigateToTalleres() },
                 modifier = Modifier.weight(1f),
                 icon = Icons.AutoMirrored.Filled.List,
                 text = "Talleres"

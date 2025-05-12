@@ -1,6 +1,7 @@
 package com.sebasdelalv.proyecto_griza.core.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -13,11 +14,18 @@ import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 
 @Composable
-fun NavigationWrapper(loginViewModel: LoginViewModel, signupViewModel: SignupViewModel, menuViewModel: MenuViewModel) {
+fun NavigationWrapper(
+    loginViewModel: LoginViewModel,
+    signupViewModel: SignupViewModel,
+    menuViewModel: MenuViewModel,
+    talleresViewModel: TalleresViewModel
+) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Perfil){
+    NavHost(navController = navController, startDestination = Talleres){
         composable<Cover>{
             CoverScreen { navController.navigate(Login) }
         }
@@ -35,21 +43,33 @@ fun NavigationWrapper(loginViewModel: LoginViewModel, signupViewModel: SignupVie
                 viewModel = menuViewModel,
                 navigateToLogin = { navController.navigate(Login) },
                 navigateToPerfil = { navController.navigate(Perfil) },
-                navigateToMenu = { navController.navigate(Menu) }
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToTalleres = { navController.navigate(Talleres) }
             )
         }
 
         composable<Perfil> {
             PerfilScreen(
                 navigateToCuenta = { navController.navigate(Cuenta) },
-                navigateToMenu = { navController.navigate(Menu) }
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToTalleres = { navController.navigate(Talleres) }
             )
         }
 
         composable<Cuenta> {
             CuentaScreen(
-                navigateToPerfil = { navController.navigate(Perfil) },
-                navigateToMenu = { navController.navigate(Menu) }
+                navigateToBack = { navController.popBackStack() },
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToTalleres = { navController.navigate(Talleres)}
+            )
+        }
+
+        composable<Talleres> {
+            TalleresScreen(
+                viewModel = talleresViewModel,
+                navigateToBack = { navController.popBackStack() },
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToTalleres = { navController.navigate(Talleres) }
             )
         }
     }

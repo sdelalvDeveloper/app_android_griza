@@ -27,19 +27,19 @@ import com.sebasdelalv.proyecto_griza.utils.MyFooter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CuentaScreen(
-    navigateToPerfil: () -> Unit,
-    navigateToMenu: () ->Unit
+    navigateToBack: () -> Unit,
+    navigateToMenu: () ->Unit,
+    navigateToTalleres: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                modifier = Modifier.height((screenWidth * 0.25f).dp),
                 title = {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
-                        contentDescription = "Perfil",
+                        contentDescription = "navegar atras perfil",
                         modifier = Modifier
                             .size((screenWidth * 0.15f).dp)
                     )
@@ -47,7 +47,7 @@ fun CuentaScreen(
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            navigateToPerfil()
+                            navigateToBack()
                         },
                         modifier = Modifier.padding(end = (screenWidth * 0.05f).dp)
                     ) {
@@ -61,7 +61,7 @@ fun CuentaScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu)
+            MyFooter(navigateToMenu, navigateToTalleres)
         }
     ) { innerPadding ->
         HorizontalDivider(
