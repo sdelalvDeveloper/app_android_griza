@@ -2,7 +2,7 @@ package com.sebasdelalv.proyecto_griza.utils
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.List
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material3.BottomAppBar
@@ -14,7 +14,8 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 @Composable
 fun MyFooter(
     navigateToMenu: () -> Unit,
-    navigateToTalleres: () -> Unit
+    navigateToTalleres: () -> Unit,
+    navigateToInfo: () -> Unit
 ) {
     BottomAppBar(
         containerColor = Principal,
@@ -31,12 +32,12 @@ fun MyFooter(
             IconNavigation(
                 onClick = { navigateToTalleres() },
                 modifier = Modifier.weight(1f),
-                icon = Icons.AutoMirrored.Filled.List,
+                icon = Icons.Default.CalendarMonth,
                 text = "Talleres"
             )
 
             IconNavigation(
-                onClick = { /* Navegar a nosotros*/ },
+                onClick = { navigateToInfo() },
                 modifier = Modifier.weight(1f),
                 icon = Icons.Default.Place,
                 text = "Nosotros"

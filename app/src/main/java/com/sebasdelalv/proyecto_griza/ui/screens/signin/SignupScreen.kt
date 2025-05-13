@@ -71,6 +71,7 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                         .padding(start = 16.dp)
                         .size(30.dp)
                         .clickable {
+                            viewModel.clearFields()
                             navigateToLogin()
                         }
                 )

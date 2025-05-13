@@ -41,7 +41,8 @@ import com.sebasdelalv.proyecto_griza.utils.PerfilActionRow
 fun PerfilScreen(
     navigateToCuenta: () ->Unit,
     navigateToMenu: () ->Unit,
-    navigateToTalleres: () -> Unit
+    navigateToTalleres: () -> Unit,
+    navigateToInfo: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -82,7 +83,7 @@ fun PerfilScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu, navigateToTalleres)
+            MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
         }
     ) { innerPadding ->
         HorizontalDivider(

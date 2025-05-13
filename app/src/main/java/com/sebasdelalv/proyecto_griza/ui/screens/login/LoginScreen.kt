@@ -39,7 +39,10 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 
 @Composable
-fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
+fun LoginScreen(
+    viewModel: LoginViewModel,
+    navigateToSignup:()-> Unit,
+    navigateToMenu: () -> Unit) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -92,7 +95,10 @@ fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
                 TextInput(password, "Contraseña") { viewModel.onPasswordChanged(it) }
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Button(
-                    onClick = {  },
+                    onClick = {
+                        viewModel.clearFields()
+                        navigateToMenu()
+                    },
                     modifier = Modifier.testTag("buttonSession"),
                     enabled = enabledButton,
                     colors = ButtonDefaults.buttonColors(
@@ -112,7 +118,7 @@ fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
                     onClick = {
                         viewModel.clearFields()
                         navigateToSignup()
-                        },
+                    },
                     modifier = Modifier.testTag("buttonRegister"),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = Principal,
@@ -123,7 +129,7 @@ fun LoginScreen(viewModel: LoginViewModel, navigateToSignup:()-> Unit) {
                         text = "Registrarme",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.15f).sp
+                        fontSize = (screenWidth * 0.04f).sp
                     )
                 }
             }

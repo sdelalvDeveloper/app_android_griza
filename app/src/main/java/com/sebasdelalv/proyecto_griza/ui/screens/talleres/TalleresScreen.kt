@@ -47,7 +47,8 @@ fun TalleresScreen(
     viewModel: TalleresViewModel,
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
-    navigateToTalleres: () -> Unit
+    navigateToTalleres: () -> Unit,
+    navigateToInfo: () -> Unit
 ){
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -101,7 +102,7 @@ fun TalleresScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu, navigateToTalleres)
+            MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
         }
     ) { innerPadding ->
         HorizontalDivider(

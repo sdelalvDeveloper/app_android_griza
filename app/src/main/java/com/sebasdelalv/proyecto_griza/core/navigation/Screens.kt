@@ -23,3 +23,6 @@ object Cuenta
 
 @Serializable
 object Talleres
+
+@Serializable
+object Info

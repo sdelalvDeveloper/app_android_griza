@@ -65,4 +65,12 @@ class SignupViewModel: ViewModel() {
                 _passwordRepeat.value.isNotEmpty() &&
                 _password.value == _passwordRepeat.value
     }
+
+    fun clearFields() {
+        _username.value = ""
+        _email.value = ""
+        _phone.value = ""
+        _password.value = ""
+        _passwordRepeat.value = ""
+    }
 }

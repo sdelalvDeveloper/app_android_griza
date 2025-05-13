@@ -37,7 +37,8 @@ fun MenuScreen(
     navigateToLogin: () -> Unit,
     navigateToPerfil: () -> Unit,
     navigateToMenu: () -> Unit,
-    navigateToTalleres: () -> Unit
+    navigateToTalleres: () -> Unit,
+    navigateToInfo: () -> Unit
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -102,8 +103,9 @@ fun MenuScreen(
         },
         bottomBar = {
             MyFooter(
-                navigateToMenu = navigateToMenu ,
-                navigateToTalleres = navigateToTalleres
+                navigateToMenu,
+                navigateToTalleres,
+                navigateToInfo
             )
         }
     ) { innerPadding ->
