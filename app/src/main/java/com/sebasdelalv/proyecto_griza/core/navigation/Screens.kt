@@ -26,3 +26,9 @@ object Talleres
 
 @Serializable
 object Info
+
+@Serializable
+object Reservas
+
+@Serializable
+object Saldo

@@ -1,5 +1,6 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.perfil
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -15,6 +16,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -42,7 +45,9 @@ fun PerfilScreen(
     navigateToCuenta: () ->Unit,
     navigateToMenu: () ->Unit,
     navigateToTalleres: () -> Unit,
-    navigateToInfo: () -> Unit
+    navigateToInfo: () -> Unit,
+    navigateToReservas: () -> Unit,
+    navigateToSaldo: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -97,63 +102,68 @@ fun PerfilScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ){
-
-            Row(
-               modifier = Modifier
-                   .fillMaxWidth()
-                   .height((screenWidth * 0.4f).dp)
-                   .padding((screenWidth * 0.05f).dp)
-                   .clip(RoundedCornerShape(12.dp)) // recorta fondo y contenido
-                   .background(Principal) // fondo dentro del clip
-                   .border(
-                       width = 1.dp,
-                       color = Color.Black,
-                       shape = RoundedCornerShape(12.dp)
-                   ),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ){
-                Text(
-                    text = "Próxima cita",
-                    fontFamily = Quicksand,
-                    fontWeight = FontWeight.Bold,
-                    fontSize = (screenWidth * 0.06f).sp
-                )
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height((screenWidth * 0.4f).dp)
+                    .padding((screenWidth * 0.05f).dp),
+                shape = RoundedCornerShape(12.dp),
+                colors = CardDefaults.cardColors(containerColor = Principal),
+                border = BorderStroke(1.dp, Color.Black),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Text(
-                        text = "Día",
+                        text = "Próxima cita",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.03f).sp
+                        fontSize = (screenWidth * 0.06f).sp
                     )
-                    Text(
-                        text = "Mes",
-                        fontFamily = Quicksand,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.03f).sp
-                    )
-                    Spacer(modifier = Modifier.height(4.dp)) // Pequeña separación
-                    Text(
-                        text = "Hora",
-                        fontFamily = Quicksand,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = (screenWidth * 0.03f).sp
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(
+                            text = "Día",
+                            fontFamily = Quicksand,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = (screenWidth * 0.03f).sp
+                        )
+                        Text(
+                            text = "Mes",
+                            fontFamily = Quicksand,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = (screenWidth * 0.03f).sp
+                        )
+                        Spacer(modifier = Modifier.height(4.dp))
+                        Text(
+                            text = "Hora",
+                            fontFamily = Quicksand,
+                            fontWeight = FontWeight.Bold,
+                            fontSize = (screenWidth * 0.03f).sp
+                        )
+                    }
                 }
             }
+
 
             PerfilActionRow(
                 "Reservas",
                 "reservas",
-                screenWidth
+                screenWidth,
+                navigateToReservas
             )
 
             PerfilActionRow(
                 "Saldo",
                 "saldo",
-                screenWidth
+                screenWidth,
+                navigateToSaldo
             )
         }
     }

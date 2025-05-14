@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.delay
 
 @Composable
-fun CarruselDeImagenes(imagenes: List<Int>, height: Dp) {
+fun SliceImages(imagenes: List<Int>, height: Dp) {
     val pagerState = rememberPagerState(
         initialPage = 0,  // Empezamos en la primera imagen
         pageCount = {imagenes.size}  // Número total de imágenes

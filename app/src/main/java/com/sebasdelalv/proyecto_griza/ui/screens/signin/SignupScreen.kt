@@ -92,7 +92,7 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                             .fillMaxHeight(0.15f)
                     )
                     Text(
-                        text = "Regístrate en griza",
+                        text = "Regístrate en Griza",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
                         fontSize = (screenWidth * 0.06f).sp
@@ -111,11 +111,11 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 verticalArrangement = Arrangement.SpaceEvenly,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextInput(username, "Username") { viewModel.onUsernameChanged(it)}
-                TextInput(email, "Email") { viewModel.onEmailChanged(it) }
-                TextInput(phone, "Phone") { viewModel.onPhoneChanged(it) }
-                TextInput(password, "Password") { viewModel.onPasswordChanged(it) }
-                TextInput(passwordRepeat, "Password repeat") { viewModel.onPasswordRepeatChanged(it) }
+                TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it)}
+                TextInput(email, "Correo electrónico") { viewModel.onEmailChanged(it) }
+                TextInput(phone, "Teléfono") { viewModel.onPhoneChanged(it) }
+                TextInput(password, "Contraseña") { viewModel.onPasswordChanged(it) }
+                TextInput(passwordRepeat, "Repita contraseña") { viewModel.onPasswordRepeatChanged(it) }
 
                 Button(
                     onClick = {  },

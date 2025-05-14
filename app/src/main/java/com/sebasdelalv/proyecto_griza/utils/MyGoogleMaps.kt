@@ -17,7 +17,7 @@ fun MyGoogleMaps(modifier: Modifier) {
     val marker = LatLng(36.71357668631978, -4.4430676901006505)
 
     val cameraPositionState = rememberCameraPositionState {
-        position = CameraPosition.fromLatLngZoom(marker, 15f) // 16f es un zoom más cercano
+        position = CameraPosition.fromLatLngZoom(marker, 15f) // zoom más cercano
     }
 
     val uiSettings by remember { mutableStateOf(MapUiSettings(zoomControlsEnabled = false)) }

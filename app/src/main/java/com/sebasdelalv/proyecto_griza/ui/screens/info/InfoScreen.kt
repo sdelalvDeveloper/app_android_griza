@@ -36,7 +36,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
-import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.MyGoogleMaps
@@ -44,7 +43,6 @@ import com.sebasdelalv.proyecto_griza.utils.MyGoogleMaps
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
-    viewModel: TalleresViewModel,
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
@@ -175,7 +173,8 @@ fun InfoScreen(
                     Icon(
                         imageVector = Icons.Default.Email,
                         contentDescription = "email",
-                        tint = Color.Black
+                        tint = Color.Black,
+                        modifier = Modifier.size((screenWidth * 0.05f).dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -189,7 +188,8 @@ fun InfoScreen(
                     Icon(
                         imageVector = Icons.Default.Call,
                         contentDescription = "telefono",
-                        tint = Color.Black
+                        tint = Color.Black,
+                        modifier = Modifier.size((screenWidth * 0.05f).dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -203,7 +203,8 @@ fun InfoScreen(
                     Icon(
                         imageVector = Icons.Filled.Language,
                         contentDescription = "redes",
-                        tint = Color.Black
+                        tint = Color.Black,
+                        modifier = Modifier.size((screenWidth * 0.05f).dp)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(

@@ -73,7 +73,7 @@ fun LoginScreen(
                         .fillMaxHeight(0.15f)
                 )
                 Text(
-                    text = "Accede a tu cuenta griza",
+                    text = "Accede a tu cuenta Griza",
                     fontFamily = Quicksand,
                     fontWeight = FontWeight.Bold,
                     fontSize = (screenWidth * 0.06f).sp

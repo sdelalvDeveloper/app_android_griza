@@ -23,7 +23,7 @@ fun PerfilActionRow(
     label: String,
     description: String,
     screenWidth: Int,
-    /*onClick: () -> Unit*/
+    onClick: () -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -42,7 +42,7 @@ fun PerfilActionRow(
             fontSize = (screenWidth * 0.05f).sp
         )
         IconButton(
-            onClick = {/*navegacion*/},
+            onClick = { onClick() },
             modifier = Modifier.padding(start = (screenWidth * 0.05f).dp)
         ) {
             Icon(
