@@ -35,6 +35,7 @@ import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.session.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 
@@ -92,7 +93,12 @@ fun LoginScreen(
             ) {
                 TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it)}
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
-                TextInput(password, "Contraseña") { viewModel.onPasswordChanged(it) }
+                PassswordInput(
+                    value = password,
+                    label = "Contraseña",
+                    onValueChange = { viewModel.onPasswordChanged(it) },
+                    isPassword = true
+                )
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Button(
                     onClick = {

@@ -19,9 +19,6 @@ object Menu
 object Perfil
 
 @Serializable
-object Cuenta
-
-@Serializable
 object Talleres
 
 @Serializable
@@ -32,3 +29,6 @@ object Reservas
 
 @Serializable
 object Saldo
+
+@Serializable
+object InfoPersonal

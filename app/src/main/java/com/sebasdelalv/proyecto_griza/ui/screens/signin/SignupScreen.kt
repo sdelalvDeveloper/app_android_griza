@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
@@ -114,8 +115,18 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it)}
                 TextInput(email, "Correo electrónico") { viewModel.onEmailChanged(it) }
                 TextInput(phone, "Teléfono") { viewModel.onPhoneChanged(it) }
-                TextInput(password, "Contraseña") { viewModel.onPasswordChanged(it) }
-                TextInput(passwordRepeat, "Repita contraseña") { viewModel.onPasswordRepeatChanged(it) }
+                PassswordInput(
+                    value = password,
+                    label = "Contraseña",
+                    onValueChange = { viewModel.onPasswordChanged(it) },
+                    isPassword = true
+                )
+                PassswordInput(
+                    value = passwordRepeat,
+                    label = "Repita contraseña",
+                    onValueChange = { viewModel.onPasswordRepeatChanged(it) },
+                    isPassword = true
+                )
 
                 Button(
                     onClick = {  },

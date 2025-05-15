@@ -1,8 +1,6 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.perfil
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -14,7 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -28,7 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
@@ -42,12 +39,13 @@ import com.sebasdelalv.proyecto_griza.utils.PerfilActionRow
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilScreen(
-    navigateToCuenta: () ->Unit,
+    navigateToBack: () -> Unit,
     navigateToMenu: () ->Unit,
     navigateToTalleres: () -> Unit,
     navigateToInfo: () -> Unit,
     navigateToReservas: () -> Unit,
-    navigateToSaldo: () -> Unit
+    navigateToSaldo: () -> Unit,
+    navigateToInfoPersonal: () -> Unit
 ) {
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -63,27 +61,27 @@ fun PerfilScreen(
                     }
                 },
                 navigationIcon = {
+                    IconButton(
+                        onClick = {
+                            navigateToBack()
+                        },
+                        modifier = Modifier.padding(start = (screenWidth * 0.05f).dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+                            contentDescription = "Cuenta",
+                            modifier = Modifier.size((screenWidth * 0.08f).dp)
+                        )
+                    }
+                },
+                actions= {
                     Icon(
                         imageVector = Icons.Default.AccountCircle,
                         contentDescription = "Perfil",
                         modifier = Modifier
                             .size((screenWidth * 0.15f).dp)
-                            .padding(start = (screenWidth * 0.05f).dp)
+                            .padding(end = (screenWidth * 0.05f).dp)
                     )
-                },
-                actions= {
-                    IconButton(
-                        onClick = {
-                            navigateToCuenta()
-                        },
-                        modifier = Modifier.padding(end = (screenWidth * 0.05f).dp)
-                    ) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.KeyboardArrowRight,
-                            contentDescription = "Cuenta",
-                            modifier = Modifier.size((screenWidth * 0.08f).dp)
-                        )
-                    }
                 }
             )
         },
@@ -164,6 +162,33 @@ fun PerfilScreen(
                 "saldo",
                 screenWidth,
                 navigateToSaldo
+            )
+            PerfilActionRow(
+                "Información personal",
+                "info personal",
+                screenWidth,
+                navigateToInfoPersonal
+            )
+
+            PerfilActionRow(
+                "Cambiar contraseña",
+                "cambiar password",
+                screenWidth,
+                navigateToInfoPersonal
+            )
+
+            PerfilActionRow(
+                "Notificaciones",
+                "notificaciones",
+                screenWidth,
+                navigateToInfoPersonal
+            )
+
+            PerfilActionRow(
+                "Eliminar cuenta",
+                "eliminar cuenta",
+                screenWidth,
+                navigateToInfoPersonal
             )
         }
     }

@@ -30,7 +30,7 @@ fun PerfilActionRow(
             .fillMaxWidth()
             .padding(
                 vertical = (screenWidth * 0.02f).dp,
-                horizontal = (screenWidth * 0.2f).dp
+                horizontal = (screenWidth * 0.15f).dp
             ),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
@@ -42,8 +42,7 @@ fun PerfilActionRow(
             fontSize = (screenWidth * 0.05f).sp
         )
         IconButton(
-            onClick = { onClick() },
-            modifier = Modifier.padding(start = (screenWidth * 0.05f).dp)
+            onClick = { onClick() }
         ) {
             Icon(
                 Icons.AutoMirrored.Filled.KeyboardArrowRight,

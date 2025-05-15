@@ -9,8 +9,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.cuenta.CuentaScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.info.InfoScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.infoPersonal.InfoPersonalScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuScreen
@@ -66,21 +66,13 @@ fun NavigationWrapper(
 
         composable<Perfil> {
             PerfilScreen(
-                navigateToCuenta = { navController.navigate(Cuenta) },
+                navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) },
                 navigateToReservas = { navController.navigate(Reservas) },
-                navigateToSaldo = { navController.navigate(Saldo) }
-            )
-        }
-
-        composable<Cuenta> {
-            CuentaScreen(
-                navigateToBack = { navController.popBackStack() },
-                navigateToMenu = { navController.navigate(Menu) },
-                navigateToTalleres = { navController.navigate(Talleres)},
-                navigateToInfo = { navController.navigate(Info) }
+                navigateToSaldo = { navController.navigate(Saldo) },
+                navigateToInfoPersonal = { navController.navigate(InfoPersonal)}
             )
         }
 
@@ -121,6 +113,10 @@ fun NavigationWrapper(
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) }
             )
+        }
+
+        composable<InfoPersonal> {
+            InfoPersonalScreen { navController.popBackStack() }
         }
     }
 }
