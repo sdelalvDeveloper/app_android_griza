@@ -5,12 +5,12 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -32,7 +32,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
-import com.sebasdelalv.proyecto_griza.data.session.SessionManager
+import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.PassswordInput
@@ -50,6 +50,8 @@ fun LoginScreen(
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val enabledButton by viewModel.isButtonEnabled.collectAsState()
+    val dialogMessage by viewModel.dialogMessage.collectAsState()
+    val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -102,8 +104,9 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Button(
                     onClick = {
-                        viewModel.clearFields()
-                        navigateToMenu()
+                        viewModel.onLoginClick(sessionManager) {
+                            navigateToMenu()
+                        }
                     },
                     modifier = Modifier.testTag("buttonSession"),
                     enabled = enabledButton,
@@ -122,7 +125,6 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Button(
                     onClick = {
-                        viewModel.clearFields()
                         navigateToSignup()
                     },
                     modifier = Modifier.testTag("buttonRegister"),
@@ -140,6 +142,18 @@ fun LoginScreen(
                 }
             }
         }
+    }
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = { viewModel.closeErrorDialog() },
+            title = { Text("Error") },
+            text = { Text(dialogMessage ?: "") },
+            confirmButton = {
+                Button(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }
 

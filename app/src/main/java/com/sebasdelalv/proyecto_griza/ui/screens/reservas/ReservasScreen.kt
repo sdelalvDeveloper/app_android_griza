@@ -32,13 +32,13 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.data.taller.Taller
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -55,20 +55,20 @@ fun ReservasScreen(
     //val talleres by viewModel.talleres.collectAsState()
 
     val talleres = listOf(
-        Taller(LocalDateTime.of(2024, 5, 10, 10, 0), "Fotografía Básica"),
-        Taller(LocalDateTime.of(2024, 5, 12, 15, 0), "Diseño Gráfico"),
-        Taller(LocalDateTime.of(2024, 5, 15, 9, 30), "Producción de Video"),
-        Taller(LocalDateTime.of(2024, 5, 17, 14, 0), "Guion Audiovisual"),
-        Taller(LocalDateTime.of(2024, 5, 20, 16, 30), "Modelado 3D"),
-        Taller(LocalDateTime.of(2024, 5, 22, 11, 0), "Edición de Fotografía"),
-        Taller(LocalDateTime.of(2024, 5, 25, 13, 0), "Redes Sociales"),
-        Taller(LocalDateTime.of(2024, 5, 28, 18, 0), "Música Digital"),
-        Taller(LocalDateTime.of(2024, 6, 2, 10, 30), "Animación 2D"),
-        Taller(LocalDateTime.of(2024, 6, 5, 17, 45), "Postproducción de Audio"),
-        Taller(LocalDateTime.of(2024, 6, 7, 14, 15), "Colorización de Video"),
-        Taller(LocalDateTime.of(2024, 6, 10, 9, 0), "Composición Visual"),
-        Taller(LocalDateTime.of(2024, 6, 13, 15, 30), "Desarrollo de Portafolio"),
-        Taller(LocalDateTime.of(2024, 6, 15, 11, 45), "Dirección de Arte")
+        Taller(Date(124, 4, 10, 10, 0), "Fotografía Básica"),
+        Taller(Date(124, 4, 12, 15, 0), "Diseño Gráfico"),
+        Taller(Date(124, 4, 15, 9, 30), "Producción de Video"),
+        Taller(Date(124, 4, 17, 14, 0), "Guion Audiovisual"),
+        Taller(Date(124, 4, 20, 16, 30), "Modelado 3D"),
+        Taller(Date(124, 4, 22, 11, 0), "Edición de Fotografía"),
+        Taller(Date(124, 4, 25, 13, 0), "Redes Sociales"),
+        Taller(Date(124, 4, 28, 18, 0), "Música Digital"),
+        Taller(Date(124, 5, 2, 10, 30), "Animación 2D"),
+        Taller(Date(124, 5, 5, 17, 45), "Postproducción de Audio"),
+        Taller(Date(124, 5, 7, 14, 15), "Colorización de Video"),
+        Taller(Date(124, 5, 10, 9, 0), "Composición Visual"),
+        Taller(Date(124, 5, 13, 15, 30), "Desarrollo de Portafolio"),
+        Taller(Date(124, 5, 15, 11, 45), "Dirección de Arte")
     )
 
     Scaffold(
@@ -135,15 +135,13 @@ fun ReservasScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        val dia = taller.fecha.format(DateTimeFormatter.ofPattern("dd"))
-                        val mes = taller.fecha.format(DateTimeFormatter.ofPattern("MMMM"))
-                        val hora = taller.fecha.format(DateTimeFormatter.ofPattern("HH:mm"))
+                        val fechaDesglosada = taller.fecha.toFechaDesglosada()
 
                         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            TextStyleTaller(text = dia, screenWidth = screenWidth)
-                            TextStyleTaller(text = mes, screenWidth = screenWidth)
+                            TextStyleTaller(text = fechaDesglosada.dia, screenWidth = screenWidth)
+                            TextStyleTaller(text = fechaDesglosada.mes, screenWidth = screenWidth)
                         }
-                        TextStyleTaller(text = hora, screenWidth = screenWidth)
+                        TextStyleTaller(text = fechaDesglosada.hora, screenWidth = screenWidth)
                         TextStyleTaller(text = taller.nombre, screenWidth = screenWidth)
                     }
                 }

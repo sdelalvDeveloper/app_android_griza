@@ -1,4 +1,4 @@
-package com.sebasdelalv.proyecto_griza.data.session
+package com.sebasdelalv.proyecto_griza.data.local
 
 import android.content.Context
 import android.content.SharedPreferences

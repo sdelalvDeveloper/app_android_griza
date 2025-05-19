@@ -58,11 +58,17 @@ dependencies {
     implementation(libs.kotlinx.serialization.json)
 
     //Map
-    implementation("com.google.maps.android:maps-compose:1.0.0")
-    implementation("com.google.android.gms:play-services-maps:18.0.2")
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.maps)
 
     // Icons
-    implementation("androidx.compose.material:material-icons-extended:<version>")
+    implementation(libs.androidx.material.icons.extended)
+
+    // retrofit
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+    implementation(libs.kotlinx.coroutines.android)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

@@ -2,34 +2,52 @@ package com.sebasdelalv.proyecto_griza.ui.screens.infoPersonal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.user.UserInfo
+import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
+import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
+import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class InfoPersonalViewModel : ViewModel() {
 
-    private val _userInfo = MutableStateFlow<UserInfo?>(null)
-    val userInfo: StateFlow<UserInfo?> = _userInfo
+    private val repository: AuthRepository = AuthRepositoryImpl()
 
-    private val _isLoading = MutableStateFlow(true)
-    val isLoading: StateFlow<Boolean> = _isLoading
+    private val _userInfo = MutableStateFlow<RegisterResult?>(null)
+    val userInfo: StateFlow<RegisterResult?> = _userInfo
 
-    init {
-        fetchUserInfo()
-    }
+    private val _dialogTitle = MutableStateFlow<String?>(null)
+    val dialogTitle: StateFlow<String?> = _dialogTitle
 
-    private fun fetchUserInfo() {
+    private val _dialogMessage = MutableStateFlow<String?>(null)
+    val dialogMessage: StateFlow<String?> = _dialogMessage
+
+    private val _isDialogOpen = MutableStateFlow(false)
+    val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
+
+
+    fun fetchUserInfo(username: String, token: String) {
         viewModelScope.launch {
-            _isLoading.value = true
-            /* llamada API*/
-            _userInfo.value = UserInfo(
-                name = "Juan Pérez",
-                email = "juan.perez@email.com",
-                phone = "+34 600 123 456"
+
+            val result = repository.get(username, token)
+            result.fold(
+                onSuccess = { getResult ->
+                    _userInfo.value = getResult
+
+                },
+                onFailure = { error ->
+                    _dialogTitle.value = "Error"
+                    _dialogMessage.value = error.message ?: "Error desconocido"
+                    _isDialogOpen.value = true
+                }
             )
-            _isLoading.value = false
         }
     }
+
+    fun closeDialog() {
+        _isDialogOpen.value = false
+        _dialogMessage.value = null
+    }
+
 }
 

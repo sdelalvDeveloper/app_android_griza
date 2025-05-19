@@ -1,14 +1,21 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.login
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
+import com.sebasdelalv.proyecto_griza.data.local.SessionManager
+import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
 class LoginViewModel: ViewModel() {
+
+    private val repository: AuthRepository = AuthRepositoryImpl()
 
     // Estado del nombre de usuario
     private val _username = MutableStateFlow("")
@@ -17,6 +24,13 @@ class LoginViewModel: ViewModel() {
     // Estado de la contraseña
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password
+
+
+    private val _dialogMessage = MutableStateFlow<String?>(null)
+    val dialogMessage: StateFlow<String?> = _dialogMessage
+
+    private val _isDialogOpen = MutableStateFlow(false)
+    val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
 
     // Estado del botón: true si ambos campos están rellenos
     val isButtonEnabled: StateFlow<Boolean> = combine(_username, _password) { user, pass ->
@@ -37,8 +51,27 @@ class LoginViewModel: ViewModel() {
     }
 
     // Aquí podrías añadir una función login()
-    fun onLoginClick() {
-        // Lógica de login (llamar a un UseCase, etc.)
+    fun onLoginClick(sessionManager: SessionManager, onSuccess: () -> Unit) {
+        viewModelScope.launch {
+
+            val result = repository.login(_username.value, _password.value)
+            result.fold(
+                onSuccess = { loginResult ->
+                    sessionManager.saveUserSession(_username.value, loginResult.token)
+                    clearFields()
+                    onSuccess()
+                },
+                onFailure = { error ->
+                    _dialogMessage.value = error.message ?: "Error desconocido"
+                    _isDialogOpen.value = true
+                }
+            )
+        }
+    }
+
+    fun closeErrorDialog() {
+        _isDialogOpen.value = false
+        _dialogMessage.value = null
     }
 
     // Limpia los campos

@@ -16,10 +16,9 @@ import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
-import com.sebasdelalv.proyecto_griza.ui.screens.saldo.SaldoScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.saldo.SaldoViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
@@ -33,10 +32,10 @@ fun NavigationWrapper(
     menuViewModel: MenuViewModel,
     talleresViewModel: TalleresViewModel,
     reservasViewModel: ReservasViewModel,
-    saldoViewModel: SaldoViewModel
+    perfilViewModel: PerfilViewModel
 ) {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Menu){
+    NavHost(navController = navController, startDestination = Login){
         composable<Cover>{
             CoverScreen { navController.navigate(Login) }
         }
@@ -56,7 +55,12 @@ fun NavigationWrapper(
         composable<Menu> {
             MenuScreen(
                 viewModel = menuViewModel,
-                navigateToLogin = { navController.navigate(Login) },
+                navigateToLogin = {
+                    navController.navigate(Login) {
+                        popUpTo(0) { inclusive = true } // Borra todo el backstack
+                        launchSingleTop = true
+                    }
+                },
                 navigateToPerfil = { navController.navigate(Perfil) },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
@@ -66,13 +70,13 @@ fun NavigationWrapper(
 
         composable<Perfil> {
             PerfilScreen(
+                viewModel = perfilViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) },
                 navigateToReservas = { navController.navigate(Reservas) },
-                navigateToSaldo = { navController.navigate(Saldo) },
-                navigateToInfoPersonal = { navController.navigate(InfoPersonal)}
+                navigateToInfoPersonal = { navController.navigate(InfoPersonal) }
             )
         }
 
@@ -98,16 +102,6 @@ fun NavigationWrapper(
         composable<Reservas> {
             ReservasScreen(
                 viewModel = reservasViewModel,
-                navigateToBack = { navController.popBackStack() },
-                navigateToMenu = { navController.navigate(Menu) },
-                navigateToTalleres = { navController.navigate(Talleres) },
-                navigateToInfo = { navController.navigate(Info) }
-            )
-        }
-
-        composable<Saldo> {
-            SaldoScreen(
-                viewModel = saldoViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },

@@ -3,8 +3,6 @@ package com.sebasdelalv.proyecto_griza.ui.screens.menu
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
@@ -30,13 +30,14 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -44,14 +45,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.sebasdelalv.proyecto_griza.R
-import com.sebasdelalv.proyecto_griza.data.session.SessionManager
-import com.sebasdelalv.proyecto_griza.data.taller.Taller
+import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.SliceImages
 import com.sebasdelalv.proyecto_griza.utils.SliceTalleres
-import java.time.LocalDateTime
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,29 +74,20 @@ fun MenuScreen(
         R.drawable.image_1
     )
 
-    val talleres = listOf(
-        Taller(LocalDateTime.of(2024, 5, 10, 10, 0), "Fotografía Básica"),
-        Taller(LocalDateTime.of(2024, 5, 12, 15, 0), "Diseño Gráfico"),
-        Taller(LocalDateTime.of(2024, 5, 15, 9, 30), "Producción de Video"),
-        Taller(LocalDateTime.of(2024, 5, 17, 14, 0), "Guion Audiovisual"),
-        Taller(LocalDateTime.of(2024, 5, 20, 16, 30), "Modelado 3D"),
-        Taller(LocalDateTime.of(2024, 5, 22, 11, 0), "Edición de Fotografía"),
-        Taller(LocalDateTime.of(2024, 5, 25, 13, 0), "Redes Sociales"),
-        Taller(LocalDateTime.of(2024, 5, 28, 18, 0), "Música Digital"),
-        Taller(LocalDateTime.of(2024, 6, 2, 10, 30), "Animación 2D"),
-        Taller(LocalDateTime.of(2024, 6, 5, 17, 45), "Postproducción de Audio"),
-        Taller(LocalDateTime.of(2024, 6, 7, 14, 15), "Colorización de Video"),
-        Taller(LocalDateTime.of(2024, 6, 10, 9, 0), "Composición Visual"),
-        Taller(LocalDateTime.of(2024, 6, 13, 15, 30), "Desarrollo de Portafolio"),
-        Taller(LocalDateTime.of(2024, 6, 15, 11, 45), "Dirección de Arte")
-    )
+    val talleres by viewModel.talleres.collectAsState()
+    val dialogMessage by viewModel.dialogMessage.collectAsState()
+    val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
     var expanded by remember { mutableStateOf(false) }
+
+    LaunchedEffect(Unit) {
+        viewModel.getAllTalleres(sessionManager.getToken().toString())
+    }
 
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text("Nombre del Usuario") },
+                title = { Text(sessionManager.getUsername().toString()) },
                 navigationIcon = {
                     Box {
                         IconButton(
@@ -211,8 +201,31 @@ fun MenuScreen(
                     }
                 }
             }
-            SliceTalleres(talleres, screenSizes)
+            SliceTalleres(
+                talleres,
+                screenSizes,
+                onReservar = { taller ->
+                    viewModel.insertReserva(
+                        token = sessionManager.getToken().toString(),
+                        username = sessionManager.getUsername().toString(),
+                        tallerId = taller?.id ?: "No existe el taller"
+                    )
+                }
+            )
         }
+    }
+
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = { viewModel.closeErrorDialog() },
+            title = { Text("Error") },
+            text = { Text(dialogMessage ?: "") },
+            confirmButton = {
+                Button(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }
 

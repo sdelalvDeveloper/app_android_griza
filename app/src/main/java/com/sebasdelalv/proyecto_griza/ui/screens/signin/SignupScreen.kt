@@ -1,21 +1,20 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.signin
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
@@ -23,6 +22,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -43,13 +44,38 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
 fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
+    val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
+
     val username by viewModel.username.collectAsState()
     val email by viewModel.email.collectAsState()
     val phone by viewModel.phone.collectAsState()
     val password by viewModel.password.collectAsState()
     val passwordRepeat by viewModel.passwordRepeat.collectAsState()
+
+    val dialogTitle by viewModel.dialogTitle.collectAsState()
+    val dialogMessage by viewModel.dialogMessage.collectAsState()
+    val isDialogOpen by viewModel.isDialogOpen.collectAsState()
     val enabledButton by viewModel.isButtonEnabled.collectAsState()
+
+    val toastMessage by viewModel.toastMessage.collectAsState()
+    val shouldNavigate by viewModel.shouldNavigate.collectAsState()
+
+    // Mostrar Toast
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.toastShown()
+        }
+    }
+
+    // Navegar después del Toast
+    LaunchedEffect(shouldNavigate) {
+        if (shouldNavigate) {
+            navigateToLogin()
+            viewModel.onNavigated()
+        }
+    }
 
     Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
         Column(
@@ -115,12 +141,22 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it)}
                 TextInput(email, "Correo electrónico") { viewModel.onEmailChanged(it) }
                 TextInput(phone, "Teléfono") { viewModel.onPhoneChanged(it) }
-                PassswordInput(
-                    value = password,
-                    label = "Contraseña",
-                    onValueChange = { viewModel.onPasswordChanged(it) },
-                    isPassword = true
-                )
+                Column(
+                ) {
+                    PassswordInput(
+                        value = password,
+                        label = "Contraseña",
+                        onValueChange = { viewModel.onPasswordChanged(it) },
+                        isPassword = true
+                    )
+                    Text(
+                        text = "6 caracteres",
+                        fontSize = 12.sp,
+                        color = Color.Gray,
+                        modifier = Modifier.padding(start = 8.dp)
+                    )
+                }
+
                 PassswordInput(
                     value = passwordRepeat,
                     label = "Repita contraseña",
@@ -129,7 +165,7 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 )
 
                 Button(
-                    onClick = {  },
+                    onClick = { viewModel.register{ navigateToLogin() } },
                     modifier = Modifier.testTag("buttonRegister"),
                     enabled = enabledButton,
                     colors = ButtonDefaults.buttonColors(
@@ -147,6 +183,18 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 }
             }
         }
+    }
+    if (isDialogOpen) {
+        AlertDialog(
+            onDismissRequest = { viewModel.closeDialog() },
+            title = { Text(dialogTitle.toString()) },
+            text = { Text(dialogMessage ?: "") },
+            confirmButton = {
+                Button(onClick = { viewModel.closeDialog() }) {
+                    Text("Aceptar")
+                }
+            }
+        )
     }
 }
 

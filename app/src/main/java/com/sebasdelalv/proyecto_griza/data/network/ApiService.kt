@@ -1,0 +1,54 @@
+package com.sebasdelalv.proyecto_griza.data.network
+
+import com.sebasdelalv.proyecto_griza.data.network.dto.LoginRequest
+import com.sebasdelalv.proyecto_griza.data.network.dto.LoginResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserRequest
+import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.TallerResponse
+import retrofit2.Response
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.Header
+import retrofit2.http.POST
+import retrofit2.http.Path
+
+interface ApiService {
+
+    @POST("usuarios/login")
+    suspend fun login(
+        @Body request: LoginRequest
+    ): Response<LoginResponse>
+
+    @POST("usuarios/register")
+    suspend fun register(
+        @Body request: RegisterUserRequest
+    ): Response<RegisterUserResponse>
+
+    @GET("usuarios/{username}")
+    suspend fun getUser(
+        @Header("Authorization") token: String,
+                        @Path("username") username: String
+    ): Response<RegisterUserResponse>
+
+    @GET("talleres/getAll")
+    suspend fun getAllTalleres(
+        @Header("Authorization") token: String
+    ): Response<List<TallerResponse>>
+
+    @GET("talleres/{id}")
+    suspend fun getTallerById(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Response<TallerResponse>
+
+    @POST("register")
+    suspend fun insertReserva(
+        @Header("Authorization") token: String,
+        username: String,
+        @Body reserva: String
+    ): Response<ReservaResponse>
+
+
+
+}

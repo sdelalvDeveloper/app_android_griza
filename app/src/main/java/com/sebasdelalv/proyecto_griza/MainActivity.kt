@@ -10,8 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sebasdelalv.proyecto_griza.core.navigation.NavigationWrapper
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
-import com.sebasdelalv.proyecto_griza.ui.screens.saldo.SaldoViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.theme.Proyecto_grizaTheme
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 val menuViewModel: MenuViewModel = viewModel()
                 val talleresViewModel: TalleresViewModel = viewModel()
                 val reservasViewModel: ReservasViewModel = viewModel()
-                val saldoViewModel: SaldoViewModel = viewModel()
+                val perfilViewModel: PerfilViewModel = viewModel()
 
                 NavigationWrapper(
                     loginViewModel,
@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                     menuViewModel,
                     talleresViewModel,
                     reservasViewModel,
-                    saldoViewModel
+                    perfilViewModel
                 )
             }
         }

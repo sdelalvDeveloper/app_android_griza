@@ -1,10 +1,17 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.signin
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
+import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 class SignupViewModel: ViewModel() {
+
+    private val repository: AuthRepository = AuthRepositoryImpl()
     // Variables para almacenar los valores de los campos
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> = _username
@@ -21,9 +28,37 @@ class SignupViewModel: ViewModel() {
     private val _passwordRepeat = MutableStateFlow("")
     val passwordRepeat: StateFlow<String> = _passwordRepeat
 
+    private val _dialogTitle = MutableStateFlow<String?>(null)
+    val dialogTitle: StateFlow<String?> = _dialogTitle
+
+    private val _dialogMessage = MutableStateFlow<String?>(null)
+    val dialogMessage: StateFlow<String?> = _dialogMessage
+
+    private val _isDialogOpen = MutableStateFlow(false)
+    val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
+
     // Variable para manejar la habilitación del botón
     private val _isButtonEnabled = MutableStateFlow(false)
     val isButtonEnabled: StateFlow<Boolean> = _isButtonEnabled
+
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage
+
+    private val _shouldNavigate = MutableStateFlow(false)
+    val shouldNavigate: StateFlow<Boolean> = _shouldNavigate
+
+    fun showToast(message: String) {
+        _toastMessage.value = message
+    }
+
+    fun toastShown() {
+        _toastMessage.value = null
+        _shouldNavigate.value = true // ← navegar después del toast
+    }
+
+    fun onNavigated() {
+        _shouldNavigate.value = false
+    }
 
     // Función que actualiza el nombre de usuario
     fun onUsernameChanged(newUsername: String) {
@@ -72,5 +107,29 @@ class SignupViewModel: ViewModel() {
         _phone.value = ""
         _password.value = ""
         _passwordRepeat.value = ""
+    }
+
+    fun closeDialog() {
+        _isDialogOpen.value = false
+        _dialogMessage.value = null
+    }
+
+    fun register(onSuccess: () -> Unit){
+        viewModelScope.launch {
+            Log.d("LoginDebug", "Username: ${_username.value}, Password: ${_password.value}")
+
+            val result = repository.register(_username.value, _email.value, _phone.value, _password.value, _passwordRepeat.value)
+            result.fold(
+                onSuccess = {
+                    clearFields()
+                    showToast("Registro exitoso") // ← esto lanza el toast
+                },
+                onFailure = { error ->
+                    _dialogTitle.value = "Error"
+                    _dialogMessage.value = error.message ?: "Error desconocido"
+                    _isDialogOpen.value = true
+                }
+            )
+        }
     }
 }

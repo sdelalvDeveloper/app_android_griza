@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -17,8 +18,8 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 fun MyColumnSaldo(
     titulo: String,
     cantidad: String,
-    screenWidth: Int
-
+    screenWidth: Int,
+    color: Color
 ){
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
@@ -34,7 +35,8 @@ fun MyColumnSaldo(
             text = cantidad,
             fontFamily = Quicksand,
             fontWeight = FontWeight.Bold,
-            fontSize = (screenWidth * 0.05f).sp
+            fontSize = (screenWidth * 0.05f).sp,
+            color = color
         )
     }
 }

@@ -1,9 +1,9 @@
 package com.sebasdelalv.proyecto_griza.data.taller
 
-import java.time.LocalDateTime
+import java.util.Date
 
 data class Taller(
-    val fecha: LocalDateTime,
+    val fecha: Date,
     val nombre: String
 )
 
