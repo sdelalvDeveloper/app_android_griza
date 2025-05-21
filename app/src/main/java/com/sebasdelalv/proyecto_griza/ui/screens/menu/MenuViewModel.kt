@@ -49,11 +49,27 @@ class MenuViewModel: ViewModel() {
             val result = reservaRepository.insertReserva(token, username, tallerId)
             result.fold(
                 onSuccess = { it ->
-                    _reserva.value = it
+                    getAllTalleres(token)
+                    getFirstReserva(token, username)
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error desconocido"
                     _isDialogOpen.value = true
+                }
+            )
+        }
+    }
+
+    fun getFirstReserva(token: String, username: String) {
+        viewModelScope.launch {
+            val result = reservaRepository.getFirst(token, username)
+            result.fold(
+                onSuccess = { it ->
+                    _reserva.value = it
+                },
+                onFailure = { error ->
+                    _reserva.value = null
+                    _dialogMessage.value = error.message ?: "Error desconocido"
                 }
             )
         }

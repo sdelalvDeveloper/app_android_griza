@@ -1,18 +1,13 @@
 package com.sebasdelalv.proyecto_griza.utils
 
-import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.AlertDialog
@@ -36,38 +31,35 @@ import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 
-@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun SliceTalleres(
+fun ColumnTalleres(
+    modifier: Modifier,
     talleres: List<TallerResult>,
     screenSizes: Int,
     onReservar: (TallerResult?) -> Unit
-    ) {
+) {
 
     var tallerSeleccionado by remember { mutableStateOf<TallerResult?>(null) }
 
-    LazyRow(
-        modifier = Modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy((screenSizes * 0.04f).dp),
-        contentPadding = PaddingValues((screenSizes * 0.02f).dp)
+    LazyColumn(
+        modifier = modifier
     ) {
         items(talleres) { taller ->
-            val fechaDesglosada = taller.fecha.toFechaDesglosada()
-
             Card(
                 modifier = Modifier
-                    .width((screenSizes * 0.4f).dp)
-                    .height((screenSizes * 0.3f).dp)
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp) // Margen horizontal alrededor del card
+                    .padding(vertical = 6.dp)
                     .clickable { tallerSeleccionado = taller },
-                shape = RoundedCornerShape(16.dp),
-                colors = CardDefaults.cardColors(
-                    containerColor = Color.Black.copy(alpha = 0.7f)
-                )
+                shape = RoundedCornerShape(8.dp), // Bordes redondeados
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Sombra del card
+                colors = CardDefaults.cardColors(containerColor = Color.LightGray)
+
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .padding((screenSizes * 0.05f).dp),
                     verticalArrangement = Arrangement.SpaceEvenly,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -75,38 +67,59 @@ fun SliceTalleres(
                         text = taller.titulo.capitalizeFirst(),
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
+                        fontSize = (screenSizes * 0.05f).sp,
+                        color = Color.Black,
+                        maxLines = 2
+                    )
+                    Text(
+                        text = taller.descripcion.capitalizeFirst(),
+                        fontFamily = Quicksand,
+                        fontWeight = FontWeight.Bold,
                         fontSize = (screenSizes * 0.04f).sp,
-                        color = Color.White,
+                        color = Color.Black,
                         maxLines = 2
                     )
                     Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceEvenly
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = (screenSizes * 0.03).dp, vertical = (screenSizes * 0.02).dp),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            TextStyleTaller(fechaDesglosada.dia, screenSizes, Color.White)
-                            TextStyleTaller(fechaDesglosada.mes, screenSizes, Color.White)
+                        val fechaDesglosada = taller.fecha.toFechaDesglosada()
 
+                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                            TextStyleTaller(text = fechaDesglosada.dia, screenWidth = screenSizes, Color.Black)
+                            TextStyleTaller(text = fechaDesglosada.mes, screenWidth = screenSizes, Color.Black)
                         }
-                        TextStyleTaller(fechaDesglosada.hora, screenSizes, Color.White)
+                        TextStyleTaller(text = fechaDesglosada.hora, screenWidth = screenSizes, Color.Black)
                     }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceEvenly,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = taller.estado,
+                            color = if (taller.estado == "DISPONIBLE") Color(0xFF4CAF50) else Color(0xFFF44336),
+                            fontSize = (screenSizes * 0.03f).sp,
+                            fontWeight = FontWeight.Medium,
+                            fontFamily = Quicksand
+                        )
 
-                    Text(
-                        text = taller.estado,
-                        color = if (taller.estado == "DISPONIBLE") Color(0xFF4CAF50) else Color(0xFFF44336),
-                        fontSize = (screenSizes * 0.03f).sp,
-                        fontWeight = FontWeight.Medium,
-                        fontFamily = Quicksand
-                    )
-
+                        Text(
+                            text = "Plazas: ${taller.plazas}",
+                            fontSize = (screenSizes * 0.03f).sp,
+                            fontWeight = FontWeight.Normal,
+                            color = Color.Black,
+                            fontFamily = Quicksand
+                        )
+                    }
                 }
             }
         }
     }
-
     // AlertDialog para confirmar la reserva
     tallerSeleccionado?.let { taller ->
         AlertDialog(
@@ -125,11 +138,13 @@ fun SliceTalleres(
                 TextButton(onClick = {
                     tallerSeleccionado = null
                 }) {
-                    Text("Cancelar",
+                    Text(
+                        "Cancelar",
                         color = Color(0xFFF44336)
                     )
                 }
             }
         )
     }
+
 }

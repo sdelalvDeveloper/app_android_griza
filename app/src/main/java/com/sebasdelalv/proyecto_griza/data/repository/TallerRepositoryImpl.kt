@@ -1,7 +1,7 @@
 package com.sebasdelalv.proyecto_griza.data.repository
 
 import com.google.gson.Gson
-import com.sebasdelalv.proyecto_griza.data.mapper.toDomain
+import com.sebasdelalv.proyecto_griza.data.mapper.toTallerDomain
 import com.sebasdelalv.proyecto_griza.data.network.RetrofitClient
 import com.sebasdelalv.proyecto_griza.data.network.dto.ErrorResponse
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
@@ -13,7 +13,7 @@ class TallerRepositoryImpl(): TallerRespository {
             val response = RetrofitClient.getRetrofit().getAllTalleres("Bearer $token")
             if (response.isSuccessful) {
                 response.body()?.let {
-                    Result.success(it.toDomain())
+                    Result.success(it.toTallerDomain())
                 } ?: Result.failure(Exception("Respuesta vacía"))
             } else {
                 val errorBodyString = response.errorBody()?.string()

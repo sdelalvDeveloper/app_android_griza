@@ -28,7 +28,7 @@ object Info
 object Reservas
 
 @Serializable
-object Saldo
+object InfoPersonal
 
 @Serializable
-object InfoPersonal
+object EliminarCuenta

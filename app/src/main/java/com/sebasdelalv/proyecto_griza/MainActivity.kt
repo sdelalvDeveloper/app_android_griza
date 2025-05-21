@@ -8,6 +8,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sebasdelalv.proyecto_griza.core.navigation.NavigationWrapper
+import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
@@ -29,6 +30,7 @@ class MainActivity : ComponentActivity() {
                 val talleresViewModel: TalleresViewModel = viewModel()
                 val reservasViewModel: ReservasViewModel = viewModel()
                 val perfilViewModel: PerfilViewModel = viewModel()
+                val eliminarCuentaViewModel: EliminarCuentaViewModel = viewModel()
 
                 NavigationWrapper(
                     loginViewModel,
@@ -36,7 +38,8 @@ class MainActivity : ComponentActivity() {
                     menuViewModel,
                     talleresViewModel,
                     reservasViewModel,
-                    perfilViewModel
+                    perfilViewModel,
+                    eliminarCuentaViewModel
                 )
             }
         }

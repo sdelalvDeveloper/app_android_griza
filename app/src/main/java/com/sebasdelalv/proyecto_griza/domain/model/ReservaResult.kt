@@ -4,7 +4,9 @@ import com.sebasdelalv.proyecto_griza.data.network.dto.EstadoReserva
 import java.util.Date
 
 data class ReservaResult(
-    val username: String,
+    val id: String,
+    val tituloTaller: String,
+    val tallerID: String,
     val estado: EstadoReserva,
-    val fecha: Date
+    val fechaTaller: Date
 )

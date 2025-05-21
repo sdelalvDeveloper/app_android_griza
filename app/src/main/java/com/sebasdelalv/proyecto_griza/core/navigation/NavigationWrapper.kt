@@ -1,14 +1,15 @@
 package com.sebasdelalv.proyecto_griza.core.navigation
 
-
-
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.info.InfoScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.infoPersonal.InfoPersonalScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginScreen
@@ -32,7 +33,8 @@ fun NavigationWrapper(
     menuViewModel: MenuViewModel,
     talleresViewModel: TalleresViewModel,
     reservasViewModel: ReservasViewModel,
-    perfilViewModel: PerfilViewModel
+    perfilViewModel: PerfilViewModel,
+    eliminarCuentaViewModel: EliminarCuentaViewModel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Login){
@@ -64,7 +66,8 @@ fun NavigationWrapper(
                 navigateToPerfil = { navController.navigate(Perfil) },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
-                navigateToInfo = { navController.navigate(Info) }
+                navigateToInfo = { navController.navigate(Info) },
+                navigateToReservas = { navController.navigate(Reservas)}
             )
         }
 
@@ -76,7 +79,8 @@ fun NavigationWrapper(
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) },
                 navigateToReservas = { navController.navigate(Reservas) },
-                navigateToInfoPersonal = { navController.navigate(InfoPersonal) }
+                navigateToInfoPersonal = { navController.navigate(InfoPersonal) },
+                navigateToEliminarCuenta = { navController.navigate(EliminarCuenta)}
             )
         }
 
@@ -111,6 +115,19 @@ fun NavigationWrapper(
 
         composable<InfoPersonal> {
             InfoPersonalScreen { navController.popBackStack() }
+        }
+
+        composable<EliminarCuenta> {
+            EliminarCuentaScreen(
+                viewModel = eliminarCuentaViewModel,
+                navigateToBack = { navController.popBackStack() },
+                navigateToLogin = {
+                    navController.navigate(Login) {
+                        popUpTo(0) { inclusive = true } // Borra todo el backstack
+                        launchSingleTop = true
+                    }
+                }
+            )
         }
     }
 }

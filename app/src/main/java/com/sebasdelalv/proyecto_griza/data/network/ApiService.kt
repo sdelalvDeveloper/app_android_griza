@@ -2,12 +2,14 @@ package com.sebasdelalv.proyecto_griza.data.network
 
 import com.sebasdelalv.proyecto_griza.data.network.dto.LoginRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.LoginResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterReservaRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.TallerResponse
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
@@ -42,13 +44,36 @@ interface ApiService {
         @Path("id") id: String
     ): Response<TallerResponse>
 
-    @POST("register")
+    @POST("reservas/register")
     suspend fun insertReserva(
         @Header("Authorization") token: String,
-        username: String,
-        @Body reserva: String
+        @Body request: RegisterReservaRequest
     ): Response<ReservaResponse>
 
+    @GET("reservas/{username}")
+    suspend fun getReservasByUsername(
+        @Header("Authorization") token: String,
+        @Path("username") username: String
+    ): Response<List<ReservaResponse>>
 
+    @DELETE("reservas/{id}/taller/{tallerID}")
+    suspend fun deleteReserva(
+        @Header("Authorization") token: String,
+        @Path("id") reservaId: String,
+        @Path("tallerID") tallerId: String
+    ): Response<Void>
+
+    @GET("reservas/first/{username}")
+    suspend fun getFirstReservaByUsername(
+        @Header("Authorization") token: String,
+        @Path("username") username: String
+    ): Response<ReservaResponse?>
+
+    @DELETE("/delete/{username}/{password}")
+    suspend fun deleteUser(
+        @Header("Authorization") token: String,
+        @Path("username") username: String,
+        @Path("password") password: String,
+    ): Response<RegisterUserResponse?>
 
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -39,18 +41,24 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.modifier.modifierLocalConsumer
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
+import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.SliceImages
 import com.sebasdelalv.proyecto_griza.utils.SliceTalleres
+import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +69,8 @@ fun MenuScreen(
     navigateToPerfil: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
-    navigateToInfo: () -> Unit
+    navigateToInfo: () -> Unit,
+    navigateToReservas: () -> Unit
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -75,13 +84,28 @@ fun MenuScreen(
     )
 
     val talleres by viewModel.talleres.collectAsState()
+    val reserva by viewModel.reserva.collectAsState()
     val dialogMessage by viewModel.dialogMessage.collectAsState()
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
     var expanded by remember { mutableStateOf(false) }
 
-    LaunchedEffect(Unit) {
-        viewModel.getAllTalleres(sessionManager.getToken().toString())
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // Recarga datos cuando la pantalla vuelva a ser visible
+                viewModel.getAllTalleres(sessionManager.getToken().orEmpty())
+                viewModel.getFirstReserva(
+                    sessionManager.getToken().orEmpty(),
+                    sessionManager.getUsername().orEmpty()
+                )
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     Scaffold(
@@ -112,9 +136,10 @@ fun MenuScreen(
                                 }
                             )
                             DropdownMenuItem(
-                                text = { Text("Notificaciones") },
+                                text = { Text("Reservas") },
                                 onClick = {
                                     expanded = false
+                                    navigateToReservas()
                                 }
                             )
                             DropdownMenuItem(
@@ -150,7 +175,8 @@ fun MenuScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(innerPadding)
+                .padding(innerPadding),
+            verticalArrangement = Arrangement.SpaceAround
         ) {
             SliceImages(imagenes, screenWidth * 0.6f)
             Card(
@@ -179,28 +205,40 @@ fun MenuScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Día",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenSizes * 0.03f).sp
-                        )
-                        Text(
-                            text = "Mes",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenSizes * 0.03f).sp
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Hora",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenSizes * 0.03f).sp
-                        )
+                        if (reserva == null) {
+                            TextStyleTaller("$dialogMessage", screenSizes, Color.Black)
+                        } else {
+                            val fechaDesglosada = reserva!!.fechaTaller.toFechaDesglosada()
+                            Text(
+                                text = fechaDesglosada.dia,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenSizes * 0.03f).sp
+                            )
+                            Text(
+                                text = fechaDesglosada.mes,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenSizes * 0.03f).sp
+                            )
+                            Text(
+                                text = fechaDesglosada.hora,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenSizes * 0.03f).sp
+                            )
+                        }
                     }
                 }
             }
+            Text(
+                text = "Próximos talleres",
+                fontFamily = Quicksand,
+                fontWeight = FontWeight.Bold,
+                fontSize = (screenSizes * 0.05f).sp,
+                modifier = Modifier.padding(horizontal = (screenSizes * 0.05f).dp)
+            )
+
             SliceTalleres(
                 talleres,
                 screenSizes,
@@ -210,6 +248,7 @@ fun MenuScreen(
                         username = sessionManager.getUsername().toString(),
                         tallerId = taller?.id ?: "No existe el taller"
                     )
+                    viewModel.getFirstReserva(sessionManager.getToken().toString(), sessionManager.getUsername().toString())
                 }
             )
         }

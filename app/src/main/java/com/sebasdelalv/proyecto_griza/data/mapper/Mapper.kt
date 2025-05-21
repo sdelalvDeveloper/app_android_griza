@@ -1,6 +1,7 @@
 package com.sebasdelalv.proyecto_griza.data.mapper
 
 
+import android.util.Log
 import com.sebasdelalv.proyecto_griza.data.network.dto.LoginResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
@@ -39,7 +40,7 @@ fun Date.toFechaDesglosada(): FechaDesglosada {
     )
 }
 
-fun List<TallerResponse>.toDomain(): List<TallerResult> {
+fun List<TallerResponse>.toTallerDomain(): List<TallerResult> {
     return this.map { it.toDomain() }
 }
 
@@ -48,6 +49,7 @@ fun TallerResponse.toDomain(): TallerResult {
     return TallerResult(
         id,
         titulo,
+        descripcion,
         fecha,
         plazas,
         estado.toString()
@@ -56,10 +58,16 @@ fun TallerResponse.toDomain(): TallerResult {
 
 fun ReservaResponse.toDomain(): ReservaResult {
     return ReservaResult(
-        username,
+        id,
+        tituloTaller,
+        tallerID,
         estado,
-        fecha
+        fechaTaller
     )
+}
+
+fun List<ReservaResponse>.toReservaDomain(): List<ReservaResult> {
+    return this.map { it.toDomain() }
 }
 
 fun String.capitalizeFirst(): String {

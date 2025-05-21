@@ -1,24 +1,65 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.reservas
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
+import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
+import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.launch
 
 class ReservasViewModel : ViewModel() {
+    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
 
-    /*private val _talleres = MutableStateFlow<List<Taller>>(emptyList())
-    val talleres: StateFlow<List<Taller>> = _talleres.asStateFlow()
+    private val _reservas = MutableStateFlow<List<ReservaResult>>(emptyList())
+    val reservas: StateFlow<List<ReservaResult>> = _reservas.asStateFlow()
 
-    init {
-        cargarTalleres()
+    private val _dialogMessage = MutableStateFlow<String?>(null)
+    val dialogMessage: StateFlow<String?> = _dialogMessage
+
+    private val _isDialogOpen = MutableStateFlow(false)
+    val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
+
+    fun getReservasUsuario(token: String, username: String) {
+        viewModelScope.launch {
+            val result = reservaRepository.getReservaByUsername(token, username)
+            result.fold(
+                onSuccess = { listaReservas ->
+                    if (listaReservas.isEmpty()) {
+                        _dialogMessage.value = "No hay reservas."
+                        _isDialogOpen.value = true
+                    } else {
+                        _reservas.value = listaReservas
+                    }
+                },
+                onFailure = { error ->
+                    _dialogMessage.value = error.message ?: "Error desconocido"
+                    _isDialogOpen.value = true
+                }
+            )
+        }
     }
 
-    private fun cargarTalleres() {
+    fun eliminarReserva(token: String, reserva: ReservaResult) {
         viewModelScope.launch {
-            try {
-                val respuesta = retrofitService.obtenerTalleres() // tu llamada Retrofit
-                _talleres.value = respuesta
-            } catch (e: Exception) {
-                // manejar error
-            }
+            val result = reservaRepository.deleteReservaById(token, reserva.id, reserva.tallerID)
+            result.fold(
+                onSuccess = {
+                    _reservas.value = _reservas.value.filterNot { it.id == reserva.id }
+                },
+                onFailure = { error ->
+                    _dialogMessage.value = error.message ?: "Error al eliminar"
+                    _isDialogOpen.value = true
+                }
+            )
         }
-    }*/
+    }
+
+    fun closeErrorDialog() {
+        _isDialogOpen.value = false
+        _dialogMessage.value = null
+    }
+
 }

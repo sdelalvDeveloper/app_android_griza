@@ -26,6 +26,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -38,11 +39,16 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
+import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.PerfilActionRow
+import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,21 +59,38 @@ fun PerfilScreen(
     navigateToTalleres: () -> Unit,
     navigateToInfo: () -> Unit,
     navigateToReservas: () -> Unit,
-    navigateToInfoPersonal: () -> Unit
+    navigateToInfoPersonal: () -> Unit,
+    navigateToEliminarCuenta: () -> Unit
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     val saldo by viewModel.saldo.collectAsState()
+    val reserva by viewModel.reserva.collectAsState()
     val dialogTitle by viewModel.dialogTitle.collectAsState()
     val dialogMessage by viewModel.dialogMessage.collectAsState()
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
-    LaunchedEffect(Unit) {
-        val token = sessionManager.getToken() ?: ""
-        val username = sessionManager.getUsername() ?: ""
-        viewModel.loadSaldo(username, token)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // Cada vez que volvamos a esta pantalla:
+                val token = sessionManager.getToken() ?: ""
+                val username = sessionManager.getUsername() ?: ""
+                viewModel.loadSaldo(username, token)
+                viewModel.getFirstReserva(
+                    sessionManager.getToken().orEmpty(),
+                    sessionManager.getUsername().orEmpty()
+                )
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     Scaffold(
@@ -147,25 +170,29 @@ fun PerfilScreen(
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Text(
-                            text = "Día",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenWidth * 0.03f).sp
-                        )
-                        Text(
-                            text = "Mes",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenWidth * 0.03f).sp
-                        )
-                        Spacer(modifier = Modifier.height(4.dp))
-                        Text(
-                            text = "Hora",
-                            fontFamily = Quicksand,
-                            fontWeight = FontWeight.Bold,
-                            fontSize = (screenWidth * 0.03f).sp
-                        )
+                        if (reserva == null) {
+                            TextStyleTaller("$dialogMessage", screenWidth, Color.Black)
+                        } else {
+                            val fechaDesglosada = reserva!!.fechaTaller.toFechaDesglosada()
+                            Text(
+                                text = fechaDesglosada.dia,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenWidth * 0.03f).sp
+                            )
+                            Text(
+                                text = fechaDesglosada.mes,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenWidth * 0.03f).sp
+                            )
+                            Text(
+                                text = fechaDesglosada.hora,
+                                fontFamily = Quicksand,
+                                fontWeight = FontWeight.Bold,
+                                fontSize = (screenWidth * 0.03f).sp
+                            )
+                        }
                     }
                 }
             }
@@ -225,17 +252,10 @@ fun PerfilScreen(
             )
 
             PerfilActionRow(
-                "Notificaciones",
-                "notificaciones",
-                screenWidth,
-                navigateToInfoPersonal
-            )
-
-            PerfilActionRow(
                 "Eliminar cuenta",
                 "eliminar cuenta",
                 screenWidth,
-                navigateToInfoPersonal
+                navigateToEliminarCuenta
             )
         }
     }
