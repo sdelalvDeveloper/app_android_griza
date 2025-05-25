@@ -5,6 +5,7 @@ import java.util.Date
 
 data class ReservaResult(
     val id: String,
+    val username: String,
     val tituloTaller: String,
     val tallerID: String,
     val estado: EstadoReserva,

@@ -1,6 +1,6 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.login
 
-import android.util.Log
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
@@ -51,15 +51,15 @@ class LoginViewModel: ViewModel() {
     }
 
     // Aquí podrías añadir una función login()
-    fun onLoginClick(sessionManager: SessionManager, onSuccess: () -> Unit) {
+    fun onLoginClick(sessionManager: SessionManager, onSuccess: (String) -> Unit) {
         viewModelScope.launch {
 
             val result = repository.login(_username.value, _password.value)
             result.fold(
                 onSuccess = { loginResult ->
-                    sessionManager.saveUserSession(_username.value, loginResult.token)
+                    sessionManager.saveUserSession(_username.value, loginResult.token, loginResult.role)
                     clearFields()
-                    onSuccess()
+                    onSuccess(loginResult.role)
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error desconocido"
@@ -67,6 +67,11 @@ class LoginViewModel: ViewModel() {
                 }
             )
         }
+    }
+
+    fun showError(message: String) {
+        _dialogMessage.value = message
+        _isDialogOpen.value = true
     }
 
     fun closeErrorDialog() {

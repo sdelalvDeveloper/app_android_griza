@@ -98,8 +98,8 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                         .padding(start = 16.dp)
                         .size(30.dp)
                         .clickable {
-                            viewModel.clearFields()
                             navigateToLogin()
+                            viewModel.clearFields()
                         }
                 )
 
@@ -165,7 +165,7 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
                 )
 
                 Button(
-                    onClick = { viewModel.register{ navigateToLogin() } },
+                    onClick = { viewModel.register() },
                     modifier = Modifier.testTag("buttonRegister"),
                     enabled = enabledButton,
                     colors = ButtonDefaults.buttonColors(

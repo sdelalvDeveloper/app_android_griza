@@ -36,7 +36,9 @@ fun ColumnTalleres(
     modifier: Modifier,
     talleres: List<TallerResult>,
     screenSizes: Int,
-    onReservar: (TallerResult?) -> Unit
+    role: String,
+    onReservar: (TallerResult?) -> Unit,
+    onNavigateToModificarTaller: () -> Unit
 ) {
 
     var tallerSeleccionado by remember { mutableStateOf<TallerResult?>(null) }
@@ -122,29 +124,20 @@ fun ColumnTalleres(
     }
     // AlertDialog para confirmar la reserva
     tallerSeleccionado?.let { taller ->
-        AlertDialog(
-            onDismissRequest = { tallerSeleccionado = null },
-            title = { Text("¿Reservar taller?") },
-            text = { Text("¿Deseas reservar el taller \"${taller.titulo.capitalizeFirst()}\"?") },
-            confirmButton = {
-                TextButton(onClick = {
-                    onReservar(taller)
-                    tallerSeleccionado = null
-                }) {
-                    Text("Aceptar")
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    tallerSeleccionado = null
-                }) {
-                    Text(
-                        "Cancelar",
-                        color = Color(0xFFF44336)
-                    )
-                }
-            }
-        )
+        if (role.lowercase() == "admin") {
+            TallerOpcionDialogAdmin(
+                taller = taller,
+                onDismiss = { tallerSeleccionado = null },
+                onModificar = { onNavigateToModificarTaller() },
+                onEliminar = {  }
+            )
+        } else {
+            ReservarTallerDialog(
+                taller = taller,
+                onReservar = onReservar,
+                onDismiss = { tallerSeleccionado = null }
+            )
+        }
     }
 
 }

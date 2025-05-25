@@ -7,6 +7,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaViewModel
@@ -16,12 +18,15 @@ import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.menuAdmin.MenuAdminScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.menuAdmin.MenuAdminViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 
@@ -34,7 +39,9 @@ fun NavigationWrapper(
     talleresViewModel: TalleresViewModel,
     reservasViewModel: ReservasViewModel,
     perfilViewModel: PerfilViewModel,
-    eliminarCuentaViewModel: EliminarCuentaViewModel
+    eliminarCuentaViewModel: EliminarCuentaViewModel,
+    cambiarPasswordViewModel: CambiarPasswordViewModel,
+    menuAdminViewModel: MenuAdminViewModel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Login){
@@ -46,7 +53,8 @@ fun NavigationWrapper(
             LoginScreen(
                 viewModel = loginViewModel,
                 navigateToSignup = { navController.navigate(SignUp) },
-                navigateToMenu = { navController.navigate(Menu) }
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin)}
             )
         }
 
@@ -80,7 +88,8 @@ fun NavigationWrapper(
                 navigateToInfo = { navController.navigate(Info) },
                 navigateToReservas = { navController.navigate(Reservas) },
                 navigateToInfoPersonal = { navController.navigate(InfoPersonal) },
-                navigateToEliminarCuenta = { navController.navigate(EliminarCuenta)}
+                navigateToEliminarCuenta = { navController.navigate(EliminarCuenta) },
+                navigateToCambiarPassword = { navController.navigate(CambiarPassword)}
             )
         }
 
@@ -90,7 +99,8 @@ fun NavigationWrapper(
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
-                navigateToInfo = { navController.navigate(Info) }
+                navigateToInfo = { navController.navigate(Info) },
+                navigateToModificarTaller = { navController.navigate(ModificarTaller) }
             )
         }
 
@@ -128,6 +138,34 @@ fun NavigationWrapper(
                     }
                 }
             )
+        }
+
+        composable<CambiarPassword> {
+            CambiarPasswordScreen(
+                viewModel = cambiarPasswordViewModel,
+                navigateToBack = { navController.popBackStack() },
+                navigateToPerfil = { navController.navigate(Perfil) }
+            )
+        }
+
+        composable<MenuAdmin> {
+            MenuAdminScreen(
+                viewModel = menuAdminViewModel,
+                navigateToLogin = {
+                    navController.navigate(Login) {
+                        popUpTo(0) { inclusive = true } // Borra todo el backstack
+                        launchSingleTop = true
+                    }
+                },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin) },
+                navigateToTalleres = { navController.navigate(Talleres) },
+                navigateToReservas = { navController.navigate(Reservas)},
+                navigateToInfo = { navController.navigate(Info) }
+            )
+        }
+
+        composable<ModificarTaller> {
+            ModificarTalleresScreen()
         }
     }
 }

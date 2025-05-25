@@ -2,23 +2,12 @@ package com.sebasdelalv.proyecto_griza.ui.screens.reservas
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -30,13 +19,11 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -49,14 +36,11 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
-import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
-import com.sebasdelalv.proyecto_griza.data.taller.Taller
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.utils.ColumnReservas
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
-import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
-import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -135,46 +119,12 @@ fun ReservasScreen(
             thickness = (screenWidth * 0.004f).dp,
             modifier = Modifier.padding(innerPadding)
         )
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .padding(top = 8.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            items(reservas) { reserva ->
-                Card(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp) // Margen horizontal alrededor del card
-                        .padding(vertical = 6.dp)
-                        .clickable { reservaSeleccionada = reserva }, // Margen vertical
-                    shape = RoundedCornerShape(8.dp), // Bordes redondeados
-                    elevation = CardDefaults.cardElevation(defaultElevation = 4.dp), // Sombra del card
-                    colors = CardDefaults.cardColors(containerColor = Color.LightGray)
-
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(16.dp), // Padding interno del card
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        val fechaDesglosada = reserva.fechaTaller.toFechaDesglosada()
-
-                        TextStyleTaller(text = " Taller: ${reserva.tituloTaller.capitalizeFirst()}", screenWidth = screenWidth, Color.Black)
-
-                        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                            TextStyleTaller(text = fechaDesglosada.dia, screenWidth = screenWidth, Color.Black)
-                            TextStyleTaller(text = fechaDesglosada.mes, screenWidth = screenWidth, Color.Black)
-                        }
-                        TextStyleTaller(text = fechaDesglosada.hora, screenWidth = screenWidth, Color.Black)
-
-                    }
-                }
-            }
-        }
+        ColumnReservas(
+            reservas = reservas,
+            screenWidth = screenWidth,
+            innerPadding = innerPadding,
+            onReservaClick = { reservaSeleccionada = it }
+        )
     }
     reservaSeleccionada?.let { reserva ->
         AlertDialog(

@@ -8,6 +8,7 @@ enum class EstadoReserva {
 
 data class ReservaResponse(
     val id: String,
+    val username: String,
     val tituloTaller: String,
     val tallerID: String,
     val estado: EstadoReserva,

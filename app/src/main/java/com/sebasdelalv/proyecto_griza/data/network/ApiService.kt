@@ -7,6 +7,7 @@ import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.TallerResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.UpdatePasswordRequest
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -69,11 +70,23 @@ interface ApiService {
         @Path("username") username: String
     ): Response<ReservaResponse?>
 
-    @DELETE("/delete/{username}/{password}")
+    @DELETE("usuarios/delete/{username}/{password}")
     suspend fun deleteUser(
         @Header("Authorization") token: String,
         @Path("username") username: String,
         @Path("password") password: String,
     ): Response<RegisterUserResponse?>
+
+    @POST("usuarios/updatePassword")
+    suspend fun updatePassword(
+        @Header("Authorization") token: String,
+        @Body usuario: UpdatePasswordRequest
+    ): Response<Boolean>
+
+    @DELETE("reservas/deleteAll/{username}")
+    suspend fun deleteReservaAllByUsername(
+        @Header("Authorization") token: String,
+        @Path("username") username: String
+    ): Response<Void>
 
 }

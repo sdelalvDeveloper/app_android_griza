@@ -1,32 +1,25 @@
-package com.sebasdelalv.proyecto_griza.ui.screens.signin
+package com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.sebasdelalv.proyecto_griza.data.network.dto.UpdatePasswordRequest
 import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-class SignupViewModel: ViewModel() {
-
+class CambiarPasswordViewModel: ViewModel() {
     private val repository: AuthRepository = AuthRepositoryImpl()
     // Variables para almacenar los valores de los campos
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> = _username
 
-    private val _email = MutableStateFlow("")
-    val email: StateFlow<String> = _email
-
-    private val _phone = MutableStateFlow("")
-    val phone: StateFlow<String> = _phone
-
     private val _password = MutableStateFlow("")
     val password: StateFlow<String> = _password
 
-    private val _passwordRepeat = MutableStateFlow("")
-    val passwordRepeat: StateFlow<String> = _passwordRepeat
+    private val _newPassword = MutableStateFlow("")
+    val newPassword: StateFlow<String> = _newPassword
 
     private val _dialogTitle = MutableStateFlow<String?>(null)
     val dialogTitle: StateFlow<String?> = _dialogTitle
@@ -47,6 +40,18 @@ class SignupViewModel: ViewModel() {
     private val _shouldNavigate = MutableStateFlow(false)
     val shouldNavigate: StateFlow<Boolean> = _shouldNavigate
 
+    private val _isConfirmDialogOpen = MutableStateFlow(false)
+    val isConfirmDialogOpen: StateFlow<Boolean> = _isConfirmDialogOpen
+
+    fun openConfirmDialog() {
+        _isConfirmDialogOpen.value = true
+    }
+
+    fun closeConfirmDialog() {
+        _isConfirmDialogOpen.value = false
+    }
+
+
     fun showToast(message: String) {
         _toastMessage.value = message
     }
@@ -66,47 +71,29 @@ class SignupViewModel: ViewModel() {
         updateButtonState()
     }
 
-    // Función que actualiza el email
-    fun onEmailChanged(newEmail: String) {
-        _email.value = newEmail
-        updateButtonState()
-    }
-
-    // Función que actualiza el teléfono
-    fun onPhoneChanged(newPhone: String) {
-        _phone.value = newPhone
-        updateButtonState()
-    }
-
     // Función que actualiza la contraseña
     fun onPasswordChanged(newPassword: String) {
         _password.value = newPassword
         updateButtonState()
     }
 
-    // Función que actualiza la repetición de la contraseña
-    fun onPasswordRepeatChanged(newPasswordRepeat: String) {
-        _passwordRepeat.value = newPasswordRepeat
+    fun onNewPasswordChanged(newPassword: String) {
+        _newPassword.value = newPassword
         updateButtonState()
     }
+
 
     // Función que actualiza el estado del botón
     private fun updateButtonState() {
         // El botón se habilita si todos los campos tienen texto y las contraseñas coinciden
-        _isButtonEnabled.value = _username.value.isNotEmpty() &&
-                _email.value.isNotEmpty() &&
-                _phone.value.isNotEmpty() &&
-                _password.value.isNotEmpty() &&
-                _passwordRepeat.value.isNotEmpty() &&
-                _password.value == _passwordRepeat.value
+        _isButtonEnabled.value = _username.value.isNotEmpty()
+                    && _password.value.isNotEmpty()
+                    && _newPassword.value.isNotEmpty()
     }
 
     fun clearFields() {
         _username.value = ""
-        _email.value = ""
-        _phone.value = ""
         _password.value = ""
-        _passwordRepeat.value = ""
     }
 
     fun closeDialog() {
@@ -114,14 +101,20 @@ class SignupViewModel: ViewModel() {
         _dialogMessage.value = null
     }
 
-    fun register(){
+    fun cambiarPassword(token: String){
+        val usuario = UpdatePasswordRequest(
+            username = _username.value,
+            password = _password.value,
+            newPassword = _newPassword.value
+        )
+
         viewModelScope.launch {
 
-            val result = repository.register(_username.value, _email.value, _phone.value, _password.value, _passwordRepeat.value)
+            val result = repository.update(token, usuario)
             result.fold(
                 onSuccess = {
                     clearFields()
-                    showToast("Registro exitoso") // ← esto lanza el toast
+                    showToast("Contraseña actualizada") // ← esto lanza el toast
                 },
                 onFailure = { error ->
                     _dialogTitle.value = "Error"

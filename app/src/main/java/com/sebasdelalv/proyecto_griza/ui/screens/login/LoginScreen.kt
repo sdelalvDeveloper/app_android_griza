@@ -43,7 +43,9 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 fun LoginScreen(
     viewModel: LoginViewModel,
     navigateToSignup:()-> Unit,
-    navigateToMenu: () -> Unit) {
+    navigateToMenu: () -> Unit,
+    navigateToMenuAdmin: () -> Unit
+) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
@@ -104,8 +106,14 @@ fun LoginScreen(
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 Button(
                     onClick = {
-                        viewModel.onLoginClick(sessionManager) {
-                            navigateToMenu()
+                        viewModel.onLoginClick(sessionManager) { role ->
+                            when (role.lowercase()) {
+                                "admin" -> navigateToMenuAdmin()
+                                "user" -> navigateToMenu()
+                                else -> {
+                                    viewModel.showError("Rol desconocido: $role")
+                                }
+                            }
                         }
                     },
                     modifier = Modifier.testTag("buttonSession"),
@@ -126,6 +134,7 @@ fun LoginScreen(
                 Button(
                     onClick = {
                         navigateToSignup()
+                        viewModel.clearFields()
                     },
                     modifier = Modifier.testTag("buttonRegister"),
                     colors = ButtonDefaults.buttonColors(

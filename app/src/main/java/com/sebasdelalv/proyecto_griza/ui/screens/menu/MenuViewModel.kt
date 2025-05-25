@@ -29,6 +29,17 @@ class MenuViewModel: ViewModel() {
     private val _isDialogOpen = MutableStateFlow(false)
     val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
 
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage
+
+    fun showToast(message: String) {
+        _toastMessage.value = message
+    }
+
+    fun toastShown() {
+        _toastMessage.value = null
+    }
+
     fun getAllTalleres(token: String) {
         viewModelScope.launch {
             val result = tallerRepository.getAll(token)
@@ -51,6 +62,7 @@ class MenuViewModel: ViewModel() {
                 onSuccess = { it ->
                     getAllTalleres(token)
                     getFirstReserva(token, username)
+                    showToast("Reserva exitosa")
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error desconocido"

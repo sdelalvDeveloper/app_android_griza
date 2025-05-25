@@ -2,23 +2,13 @@ package com.sebasdelalv.proyecto_griza.ui.screens.talleres
 
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
@@ -31,10 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
@@ -45,19 +32,11 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
-import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
-import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
-import com.sebasdelalv.proyecto_griza.data.taller.Taller
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.ColumnTalleres
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
-import com.sebasdelalv.proyecto_griza.utils.SliceTalleres
-import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
-import java.time.LocalDateTime
-import java.util.Date
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -67,7 +46,8 @@ fun TalleresScreen(
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
-    navigateToInfo: () -> Unit
+    navigateToInfo: () -> Unit,
+    navigateToModificarTaller: () -> Unit
 ){
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -139,13 +119,15 @@ fun TalleresScreen(
             .padding(top = 8.dp),
             talleres,
             screenSizes,
+            sessionManager.getRole().toString(),
             onReservar = { taller ->
                 viewModel.insertReserva(
                     token = sessionManager.getToken().toString(),
                     username = sessionManager.getUsername().toString(),
                     tallerId = taller?.id ?: "No existe el taller"
                 )
-            }
+            },
+            onNavigateToModificarTaller = navigateToModificarTaller
         )
     }
 

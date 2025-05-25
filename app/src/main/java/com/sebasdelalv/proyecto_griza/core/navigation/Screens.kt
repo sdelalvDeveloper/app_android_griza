@@ -32,3 +32,12 @@ object InfoPersonal
 
 @Serializable
 object EliminarCuenta
+
+@Serializable
+object CambiarPassword
+
+@Serializable
+object MenuAdmin
+
+@Serializable
+object ModificarTaller

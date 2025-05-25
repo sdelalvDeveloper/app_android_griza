@@ -10,4 +10,6 @@ interface ReservaRepository {
     suspend fun deleteReservaById(token: String, id: String, tallerID: String): Result<Unit>
 
     suspend fun getFirst(token: String, username: String): Result<ReservaResult>
+
+    suspend fun deleteAll(token: String, username: String) : Result<Unit>
 }

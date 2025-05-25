@@ -11,13 +11,15 @@ class SessionManager(context: Context) {
     companion object {
         private const val KEY_USERNAME = "username"
         private const val KEY_TOKEN = "token"
+        private const val KEY_ROLE = "role"
     }
 
     // Guardar el username y el token
-    fun saveUserSession(username: String, token: String) {
+    fun saveUserSession(username: String, token: String, role: String) {
         sharedPreferences.edit() {
             putString(KEY_USERNAME, username)
             putString(KEY_TOKEN, token)
+            putString(KEY_ROLE, role)
         }
     }
 
@@ -29,6 +31,11 @@ class SessionManager(context: Context) {
     // Obtener el token
     fun getToken(): String? {
         return sharedPreferences.getString(KEY_TOKEN, null)
+    }
+
+    // Obtener el rol
+    fun getRole(): String? {
+        return sharedPreferences.getString(KEY_ROLE, null)
     }
 
     // Limpiar la sesión (para logout)

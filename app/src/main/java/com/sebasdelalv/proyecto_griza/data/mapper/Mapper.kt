@@ -16,7 +16,10 @@ import java.util.Date
 import java.util.Locale
 
 fun LoginResponse.toDomain(): LoginResult {
-    return LoginResult(token = token)
+    return LoginResult(
+        token = token,
+        role = role
+    )
 }
 
 fun RegisterUserResponse.toDomain(): RegisterResult {
@@ -59,6 +62,7 @@ fun TallerResponse.toDomain(): TallerResult {
 fun ReservaResponse.toDomain(): ReservaResult {
     return ReservaResult(
         id,
+        username,
         tituloTaller,
         tallerID,
         estado,

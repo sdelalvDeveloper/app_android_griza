@@ -117,4 +117,29 @@ class ReservaRepositoryImpl(): ReservaRepository {
             Result.failure(e)
         }
     }
+
+    override suspend fun deleteAll(
+        token: String,
+        username: String
+    ): Result<Unit> {
+        return try {
+            val response = RetrofitClient.getRetrofit().deleteReservaAllByUsername("Bearer $token", username)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBodyString = response.errorBody()?.string()
+                val errorMessage = try {
+                    val gson = Gson()
+                    val errorResponse = gson.fromJson(errorBodyString, ErrorResponse::class.java)
+                    errorResponse?.message ?: "Error desconocido"
+                } catch (e: Exception) {
+                    "Error desconocido"
+                }
+                Result.failure(Exception(errorMessage))
+            }
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
 }
