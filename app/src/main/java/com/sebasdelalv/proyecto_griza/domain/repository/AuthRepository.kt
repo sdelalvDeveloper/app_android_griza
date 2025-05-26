@@ -15,4 +15,6 @@ interface AuthRepository {
 
     suspend fun update(token: String, usuario: UpdatePasswordRequest): Result<Boolean>
 
+    suspend fun getAll(token: String): Result<List<RegisterResult>>
+
 }

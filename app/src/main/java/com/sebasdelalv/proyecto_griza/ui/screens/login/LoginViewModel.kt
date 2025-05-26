@@ -57,7 +57,7 @@ class LoginViewModel: ViewModel() {
             val result = repository.login(_username.value, _password.value)
             result.fold(
                 onSuccess = { loginResult ->
-                    sessionManager.saveUserSession(_username.value, loginResult.token, loginResult.role)
+                    sessionManager.saveUserSession(_username.value, loginResult.token, loginResult.role, _password.value)
                     clearFields()
                     onSuccess(loginResult.role)
                 },

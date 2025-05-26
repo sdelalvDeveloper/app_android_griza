@@ -41,3 +41,6 @@ object MenuAdmin
 
 @Serializable
 object ModificarTaller
+
+@Serializable
+object Usuarios

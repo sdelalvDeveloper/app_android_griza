@@ -17,6 +17,7 @@ import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosViewModel
 import com.sebasdelalv.proyecto_griza.ui.theme.Proyecto_grizaTheme
 
 class MainActivity : ComponentActivity() {
@@ -35,6 +36,7 @@ class MainActivity : ComponentActivity() {
                 val eliminarCuentaViewModel: EliminarCuentaViewModel = viewModel()
                 val cambiarPasswordViewModel: CambiarPasswordViewModel = viewModel()
                 val menuAdminViewModel: MenuAdminViewModel = viewModel()
+                val usuariosViewModel: UsuariosViewModel = viewModel()
 
                 NavigationWrapper(
                     loginViewModel,
@@ -45,7 +47,8 @@ class MainActivity : ComponentActivity() {
                     perfilViewModel,
                     eliminarCuentaViewModel,
                     cambiarPasswordViewModel,
-                    menuAdminViewModel
+                    menuAdminViewModel,
+                    usuariosViewModel
                 )
             }
         }

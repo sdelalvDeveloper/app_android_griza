@@ -28,7 +28,8 @@ fun ColumnReservas(
     reservas: List<ReservaResult>,
     screenWidth: Int,
     innerPadding: PaddingValues,
-    onReservaClick: (ReservaResult) -> Unit
+    onReservaClick: (ReservaResult) -> Unit,
+    role: String
 ) {
     LazyColumn(
         modifier = Modifier
@@ -56,11 +57,22 @@ fun ColumnReservas(
                 ) {
                     val fechaDesglosada = reserva.fechaTaller.toFechaDesglosada()
 
-                    TextStyleTaller(
-                        text = " Taller: ${reserva.tituloTaller.capitalizeFirst()}",
-                        screenWidth = screenWidth,
-                        Color.Black
-                    )
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        TextStyleTaller(
+                            text = " Taller: ${reserva.tituloTaller.capitalizeFirst()}",
+                            screenWidth = screenWidth,
+                            Color.Black
+                        )
+                        if (role.lowercase() == "admin") {
+                            TextStyleTaller(
+                                text = " Usuario: ${reserva.username}",
+                                screenWidth = screenWidth,
+                                Color.Black
+                            )
+                        }
+                    }
 
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
                         TextStyleTaller(text = fechaDesglosada.dia, screenWidth = screenWidth, Color.Black)

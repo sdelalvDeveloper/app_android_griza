@@ -31,7 +31,7 @@ interface ApiService {
     @GET("usuarios/{username}")
     suspend fun getUser(
         @Header("Authorization") token: String,
-                        @Path("username") username: String
+        @Path("username") username: String
     ): Response<RegisterUserResponse>
 
     @GET("talleres/getAll")
@@ -88,5 +88,10 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("username") username: String
     ): Response<Void>
+
+    @GET("usuarios/getAll")
+    suspend fun getAllUser(
+        @Header("Authorization") token: String
+    ): Response<List<RegisterUserResponse>>
 
 }

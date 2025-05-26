@@ -59,7 +59,8 @@ fun MenuAdminScreen(
     navigateToMenuAdmin: () -> Unit,
     navigateToTalleres: () -> Unit,
     navigateToReservas: () -> Unit,
-    navigateToInfo: () -> Unit
+    navigateToInfo: () -> Unit,
+    navigateToUsuarios: () -> Unit
 ) {
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -141,7 +142,7 @@ fun MenuAdminScreen(
                     .height((screenWidth * 0.3f))
                     .padding((screenWidth * 0.05f))
                     .clickable {
-
+                        navigateToUsuarios()
                     },
                 shape = RoundedCornerShape(12.dp),
                 colors = CardDefaults.cardColors(containerColor = Principal),

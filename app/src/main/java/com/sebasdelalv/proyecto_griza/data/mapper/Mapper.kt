@@ -31,6 +31,10 @@ fun RegisterUserResponse.toDomain(): RegisterResult {
     )
 }
 
+fun List<RegisterUserResponse>.toUserDomain(): List<RegisterResult> {
+    return this.map { it.toDomain()}
+}
+
 fun Date.toFechaDesglosada(): FechaDesglosada {
     val diaFormat = SimpleDateFormat("dd", Locale.getDefault())
     val mesFormat = SimpleDateFormat("MMM", Locale.getDefault())

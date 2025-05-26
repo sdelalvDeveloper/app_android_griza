@@ -1,4 +1,4 @@
-package com.sebasdelalv.proyecto_griza.ui.screens.reservas
+package com.sebasdelalv.proyecto_griza.ui.screens.usuarios
 
 import android.os.Build
 import androidx.annotation.RequiresApi
@@ -35,18 +35,17 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
-import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
-import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
+import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
-import com.sebasdelalv.proyecto_griza.utils.ColumnReservas
+import com.sebasdelalv.proyecto_griza.utils.ColumnUsuarios
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun ReservasScreen(
-    viewModel: ReservasViewModel,
+fun UsuariosScreen(
+    viewModel: UsuariosViewModel,
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
@@ -56,11 +55,11 @@ fun ReservasScreen(
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
-    val reservas by viewModel.reservas.collectAsState()
+    val usuarios by viewModel.usuarios.collectAsState()
     val dialogMessage by viewModel.dialogMessage.collectAsState()
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
-    var reservaSeleccionada by remember { mutableStateOf<ReservaResult?>(null) }
+    var usuarioSeleccionado by remember { mutableStateOf<RegisterResult?>(null) }
 
     // Observa cambios de ciclo de vida (como volver a esta pantalla)
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -68,9 +67,8 @@ fun ReservasScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 // Recargar reservas al volver a esta pantalla
-                viewModel.getReservasUsuario(
-                    sessionManager.getToken().orEmpty(),
-                    sessionManager.getUsername().orEmpty()
+                viewModel.getUsuarios(
+                    sessionManager.getToken().orEmpty()
                 )
             }
         }
@@ -85,7 +83,7 @@ fun ReservasScreen(
             CenterAlignedTopAppBar(
                 title = {
                     Text(
-                        text = "RESERVAS",
+                        text = "USUARIOS",
                         fontFamily = Quicksand,
                         fontWeight = FontWeight.Bold,
                         fontSize = (screenWidth * 0.06f).sp
@@ -119,27 +117,27 @@ fun ReservasScreen(
             thickness = (screenWidth * 0.004f).dp,
             modifier = Modifier.padding(innerPadding)
         )
-        ColumnReservas(
-            reservas = reservas,
+        ColumnUsuarios(
+            usuarios = usuarios,
             screenWidth = screenWidth,
             innerPadding = innerPadding,
-            onReservaClick = { reservaSeleccionada = it },
-            role = sessionManager.getRole().toString()
+            onUsuarioClick = { usuarioSeleccionado = it }
         )
     }
-    reservaSeleccionada?.let { reserva ->
+    usuarioSeleccionado?.let { usuario ->
         AlertDialog(
-            onDismissRequest = { reservaSeleccionada = null },
-            title = { Text("Eliminar reserva") },
-            text = { Text("¿Deseas eliminar la reserva del taller \"${reserva.tituloTaller.capitalizeFirst()}\"?") },
+            onDismissRequest = { usuarioSeleccionado = null },
+            title = { Text("Eliminar usuario") },
+            text = { Text("¿Deseas eliminar el usuario \"${usuario.username}\"?") },
             confirmButton = {
                 TextButton(
                     onClick = {
-                        viewModel.eliminarReserva(
+                        viewModel.eliminarUsuario(
                             sessionManager.getToken().toString(),
-                            reserva
+                            usuario.username,
+                            sessionManager.getPassword().toString()
                         )
-                        reservaSeleccionada = null
+                        usuarioSeleccionado = null
                     }
                 ) {
                     Text("Eliminar", color = Color.Red)
@@ -147,7 +145,7 @@ fun ReservasScreen(
             },
             dismissButton = {
                 TextButton(
-                    onClick = { reservaSeleccionada = null }
+                    onClick = { usuarioSeleccionado = null }
                 ) {
                     Text("Salir")
                 }

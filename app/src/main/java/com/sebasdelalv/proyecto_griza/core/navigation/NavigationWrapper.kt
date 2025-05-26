@@ -29,6 +29,8 @@ import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -41,7 +43,8 @@ fun NavigationWrapper(
     perfilViewModel: PerfilViewModel,
     eliminarCuentaViewModel: EliminarCuentaViewModel,
     cambiarPasswordViewModel: CambiarPasswordViewModel,
-    menuAdminViewModel: MenuAdminViewModel
+    menuAdminViewModel: MenuAdminViewModel,
+    usuariosViewModel: UsuariosViewModel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Login){
@@ -160,6 +163,17 @@ fun NavigationWrapper(
                 navigateToMenuAdmin = { navController.navigate(MenuAdmin) },
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToReservas = { navController.navigate(Reservas)},
+                navigateToInfo = { navController.navigate(Info) },
+                navigateToUsuarios = { navController.navigate(Usuarios) }
+            )
+        }
+
+        composable<Usuarios> {
+            UsuariosScreen(
+                viewModel = usuariosViewModel,
+                navigateToBack = { navController.popBackStack() },
+                navigateToMenu = { navController.navigate(Menu) },
+                navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) }
             )
         }

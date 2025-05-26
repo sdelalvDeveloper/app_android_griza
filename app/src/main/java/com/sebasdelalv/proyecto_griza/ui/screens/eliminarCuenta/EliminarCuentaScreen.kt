@@ -103,6 +103,7 @@ fun EliminarCuentaScreen(
         Spacer(modifier = Modifier.fillMaxHeight(0.1f))
         Button(
             onClick = {
+                viewModel.clearFields()
                 navigateToBack()
             },
             colors = ButtonDefaults.buttonColors(
