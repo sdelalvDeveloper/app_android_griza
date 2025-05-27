@@ -3,9 +3,10 @@ package com.sebasdelalv.proyecto_griza.ui.screens.usuarios
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
+import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
-import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
+import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -13,6 +14,7 @@ import kotlinx.coroutines.launch
 
 class UsuariosViewModel: ViewModel() {
     private val usuarioRepository: AuthRepository = AuthRepositoryImpl()
+    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
 
     private val _usuarios = MutableStateFlow<List<RegisterResult>>(emptyList())
     val usuarios: StateFlow<List<RegisterResult>> = _usuarios.asStateFlow()
@@ -49,6 +51,15 @@ class UsuariosViewModel: ViewModel() {
             result.fold(
                 onSuccess = {
                     _usuarios.value = _usuarios.value.filterNot { it.username == username}
+                    reservaRepository.deleteAll(token, username).fold(
+                        onSuccess = {
+                            // Mensaje del toast "Borrado exitoso"
+                        }, onFailure = {error ->
+                            _dialogMessage.value = error.message ?: "Error al eliminar"
+                            _isDialogOpen.value = true
+
+                        }
+                    )
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error al eliminar"
