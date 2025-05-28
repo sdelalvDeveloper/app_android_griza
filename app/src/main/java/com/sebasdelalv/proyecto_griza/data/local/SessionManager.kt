@@ -12,16 +12,14 @@ class SessionManager(context: Context) {
         private const val KEY_USERNAME = "username"
         private const val KEY_TOKEN = "token"
         private const val KEY_ROLE = "role"
-        private const val KEY_PASSWORD = "password"
     }
 
     // Guardar el username y el token
-    fun saveUserSession(username: String, token: String, role: String, password: String) {
+    fun saveUserSession(username: String, token: String, role: String) {
         sharedPreferences.edit() {
             putString(KEY_USERNAME, username)
             putString(KEY_TOKEN, token)
             putString(KEY_ROLE, role)
-            putString(KEY_PASSWORD, password)
         }
     }
 
@@ -38,11 +36,6 @@ class SessionManager(context: Context) {
     // Obtener el rol
     fun getRole(): String? {
         return sharedPreferences.getString(KEY_ROLE, null)
-    }
-
-    // Obtener la contraseña
-    fun getPassword(): String? {
-        return sharedPreferences.getString(KEY_PASSWORD, null)
     }
 
     // Limpiar la sesión (para logout)

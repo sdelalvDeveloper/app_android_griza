@@ -17,4 +17,6 @@ interface AuthRepository {
 
     suspend fun getAll(token: String): Result<List<RegisterResult>>
 
+    suspend fun activarBono(token: String, username: String): Result<RegisterResult>
+
 }

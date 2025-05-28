@@ -1,6 +1,7 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.usuarios
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,15 +63,21 @@ fun UsuariosScreen(
 
     var usuarioSeleccionado by remember { mutableStateOf<RegisterResult?>(null) }
 
+    val toastMessage by viewModel.toastMessage.collectAsState()
+
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.closeToast()
+        }
+    }
+
     // Observa cambios de ciclo de vida (como volver a esta pantalla)
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
-            if (event == Lifecycle.Event.ON_RESUME) {
-                // Recargar reservas al volver a esta pantalla
-                viewModel.getUsuarios(
-                    sessionManager.getToken().orEmpty()
-                )
+            if (event == Lifecycle.Event.ON_RESUME && usuarios.isEmpty()) {
+                viewModel.getUsuarios(sessionManager.getToken().orEmpty())
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
@@ -127,27 +135,32 @@ fun UsuariosScreen(
     usuarioSeleccionado?.let { usuario ->
         AlertDialog(
             onDismissRequest = { usuarioSeleccionado = null },
-            title = { Text("Eliminar usuario") },
-            text = { Text("¿Deseas eliminar el usuario \"${usuario.username}\"?") },
+            title = { Text("Usuario") },
+            text = { Text("¿Qué acción desea realizar con usuario \"${usuario.username}\"?") },
             confirmButton = {
+                TextButton(
+                    onClick = {
+                        viewModel.activarBono(
+                            sessionManager.getToken().toString(),
+                            usuario.username
+                        )
+                        usuarioSeleccionado = null
+                    }
+                ) {
+                    Text("Activar bono")
+                }
+            },
+            dismissButton = {
                 TextButton(
                     onClick = {
                         viewModel.eliminarUsuario(
                             sessionManager.getToken().toString(),
-                            usuario.username,
-                            sessionManager.getPassword().toString()
+                            usuario.username
                         )
                         usuarioSeleccionado = null
                     }
                 ) {
                     Text("Eliminar", color = Color.Red)
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = { usuarioSeleccionado = null }
-                ) {
-                    Text("Salir")
                 }
             }
         )

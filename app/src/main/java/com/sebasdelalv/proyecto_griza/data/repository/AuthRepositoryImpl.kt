@@ -171,4 +171,31 @@ class AuthRepositoryImpl() : AuthRepository {
         }
     }
 
+    override suspend fun activarBono(
+        token: String,
+        username: String
+    ): Result<RegisterResult> {
+        return try {
+            val response = RetrofitClient.getRetrofit().activarBono("Bearer $token", username)
+            if (response.isSuccessful) {
+                response.body()?.let {
+                    Result.success(it.toDomain())
+                } ?: Result.failure(Exception("Respuesta vacía"))
+            } else {
+                val errorBodyString = response.errorBody()?.string()
+                val errorMessage = try {
+                    val gson = Gson()
+                    val errorResponse = gson.fromJson(errorBodyString, ErrorResponse::class.java)
+                    errorResponse?.message ?: "Error desconocido"
+                } catch (e: Exception) {
+                    "Error desconocido"
+                }
+                Result.failure(Exception(errorMessage))
+            }
+
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 }

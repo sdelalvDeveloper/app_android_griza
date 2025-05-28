@@ -94,4 +94,10 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<List<RegisterUserResponse>>
 
+    @POST("usuarios/activarBono/{username}")
+    suspend fun activarBono(
+        @Header("Authorization") token: String,
+        @Path("username") username: String,
+    ): Response<RegisterUserResponse>
+
 }

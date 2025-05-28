@@ -25,6 +25,19 @@ class UsuariosViewModel: ViewModel() {
     private val _isDialogOpen = MutableStateFlow(false)
     val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
 
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage
+
+    private fun showToast(message: String) {
+        _toastMessage.value = message
+    }
+
+    fun closeToast() {
+        _toastMessage.value = null
+    }
+
+
+
     fun getUsuarios(token: String) {
         viewModelScope.launch {
             val result = usuarioRepository.getAll(token)
@@ -45,21 +58,31 @@ class UsuariosViewModel: ViewModel() {
         }
     }
 
-    fun eliminarUsuario(token: String, username: String, password: String) {
+    fun eliminarUsuario(token: String, username: String) {
         viewModelScope.launch {
-            val result = usuarioRepository.delete(token, username, password)
+            val result = usuarioRepository.delete(token, username, "")
             result.fold(
                 onSuccess = {
                     _usuarios.value = _usuarios.value.filterNot { it.username == username}
-                    reservaRepository.deleteAll(token, username).fold(
-                        onSuccess = {
-                            // Mensaje del toast "Borrado exitoso"
-                        }, onFailure = {error ->
-                            _dialogMessage.value = error.message ?: "Error al eliminar"
-                            _isDialogOpen.value = true
+                    reservaRepository.deleteAll(token, username)
+                    showToast("Usuario eliminado correctamente")
+                    getUsuarios(token)
+                },
+                onFailure = { error ->
+                    _dialogMessage.value = error.message ?: "Error al eliminar"
+                    _isDialogOpen.value = true
+                }
+            )
+        }
+    }
 
-                        }
-                    )
+    fun activarBono(token: String, username: String) {
+        viewModelScope.launch {
+            val result = usuarioRepository.activarBono(token, username)
+            result.fold(
+                onSuccess = {
+                    showToast("Bono activado correctamente")
+                    getUsuarios(token)
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error al eliminar"
