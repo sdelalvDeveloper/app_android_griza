@@ -49,7 +49,23 @@ class TalleresViewModel : ViewModel() {
         viewModelScope.launch {
             val result = reservaRepository.insertReserva(token, username, tallerId)
             result.fold(
-                onSuccess = { it ->
+                onSuccess = {
+                    getAllTalleres(token)
+                },
+                onFailure = { error ->
+                    _dialogMessage.value = error.message ?: "Error desconocido"
+                    _isDialogOpen.value = true
+                }
+            )
+        }
+    }
+
+    fun eliminarTaller(token: String, id: String) {
+        viewModelScope.launch {
+            val result = tallerRepository.deleteTaller(token, id)
+            result.fold(
+                onSuccess = {
+                    reservaRepository.deleteReservaByIdTaller(token, id)
                     getAllTalleres(token)
                 },
                 onFailure = { error ->

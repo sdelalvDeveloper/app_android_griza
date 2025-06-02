@@ -7,6 +7,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.toRoute
 import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
@@ -27,6 +28,7 @@ import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresScreen
+import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosScreen
@@ -44,7 +46,8 @@ fun NavigationWrapper(
     eliminarCuentaViewModel: EliminarCuentaViewModel,
     cambiarPasswordViewModel: CambiarPasswordViewModel,
     menuAdminViewModel: MenuAdminViewModel,
-    usuariosViewModel: UsuariosViewModel
+    usuariosViewModel: UsuariosViewModel,
+    modificarTalleresViewModel: ModificarTalleresViewModel
 ) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Login){
@@ -103,7 +106,8 @@ fun NavigationWrapper(
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) },
-                navigateToModificarTaller = { navController.navigate(ModificarTaller) }
+                navigateToModificarTaller = { id, tipoScreen -> navController.navigate(ModificarTaller(id = id, tipoScreen = tipoScreen)) },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin) }
             )
         }
 
@@ -112,7 +116,8 @@ fun NavigationWrapper(
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
-                navigateToInfo = { navController.navigate(Info) }
+                navigateToInfo = { navController.navigate(Info) },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin) }
             )
         }
 
@@ -122,7 +127,8 @@ fun NavigationWrapper(
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
-                navigateToInfo = { navController.navigate(Info) }
+                navigateToInfo = { navController.navigate(Info) },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin) }
             )
         }
 
@@ -178,8 +184,15 @@ fun NavigationWrapper(
             )
         }
 
-        composable<ModificarTaller> {
-            ModificarTalleresScreen()
+        composable<ModificarTaller> { backStackEntry ->
+            val taller: ModificarTaller = backStackEntry.toRoute()
+            ModificarTalleresScreen(
+                id = taller.id,
+                tipoScreen = taller.tipoScreen,
+                viewModel = modificarTalleresViewModel,
+                navigateToBack = { navController.popBackStack() },
+                navigateToTalleres = { navController.navigate(Talleres) },
+            )
         }
     }
 }

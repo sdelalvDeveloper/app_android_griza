@@ -13,7 +13,7 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 
 @Composable
 fun MyFooterAdmin(
-    navigateToMenu: () -> Unit,
+    navigateToMenuAdmin: () -> Unit,
     navigateToTalleres: () -> Unit,
     navigateToInfo: () -> Unit
 ) {
@@ -23,7 +23,7 @@ fun MyFooterAdmin(
         modifier = Modifier.fillMaxWidth(),
         content = {
             IconNavigation(
-                onClick = { navigateToMenu() },
+                onClick = { navigateToMenuAdmin() },
                 modifier = Modifier.weight(1f),
                 icon = Icons.Default.Home,
                 text = "Inicio"

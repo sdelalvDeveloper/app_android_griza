@@ -10,11 +10,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -38,7 +36,8 @@ fun ColumnTalleres(
     screenSizes: Int,
     role: String,
     onReservar: (TallerResult?) -> Unit,
-    onNavigateToModificarTaller: () -> Unit
+    onNavigateToModificarTaller: (String, String) -> Unit,
+    onEliminarTaller: (TallerResult) -> Unit
 ) {
 
     var tallerSeleccionado by remember { mutableStateOf<TallerResult?>(null) }
@@ -128,8 +127,8 @@ fun ColumnTalleres(
             TallerOpcionDialogAdmin(
                 taller = taller,
                 onDismiss = { tallerSeleccionado = null },
-                onModificar = { onNavigateToModificarTaller() },
-                onEliminar = {  }
+                onModificar = { onNavigateToModificarTaller(taller.id, "modificar") },
+                onEliminar = onEliminarTaller
             )
         } else {
             ReservarTallerDialog(

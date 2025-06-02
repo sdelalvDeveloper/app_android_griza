@@ -41,6 +41,7 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.ColumnReservas
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
+import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
@@ -50,7 +51,8 @@ fun ReservasScreen(
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
-    navigateToInfo: () -> Unit
+    navigateToInfo: () -> Unit,
+    navigateToMenuAdmin: () -> Unit
 ){
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
@@ -111,7 +113,11 @@ fun ReservasScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
+            if (sessionManager.getRole()?.lowercase() == "admin") {
+                MyFooterAdmin(navigateToMenuAdmin, navigateToTalleres, navigateToInfo)
+            } else {
+                MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
+            }
         }
     ) { innerPadding ->
         HorizontalDivider(

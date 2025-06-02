@@ -73,7 +73,6 @@ class ReservaRepositoryImpl(): ReservaRepository {
         return try {
             val response = RetrofitClient.getRetrofit()
                 .deleteReserva("Bearer $token", id, tallerID)
-
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
@@ -138,6 +137,30 @@ class ReservaRepositoryImpl(): ReservaRepository {
                 Result.failure(Exception(errorMessage))
             }
 
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    override suspend fun deleteReservaByIdTaller(
+        token: String,
+        tallerID: String
+    ): Result<Unit> {
+        return try {
+            val response = RetrofitClient.getRetrofit()
+                .deleteReservasByIdTaller("Bearer $token", tallerID)
+            if (response.isSuccessful) {
+                Result.success(Unit)
+            } else {
+                val errorBody = response.errorBody()?.string()
+                val errorMsg = try {
+                    Gson().fromJson(errorBody, ErrorResponse::class.java)?.message
+                        ?: "Error desconocido"
+                } catch (e: Exception) {
+                    "Error desconocido"
+                }
+                Result.failure(Exception(errorMsg))
+            }
         } catch (e: Exception) {
             Result.failure(e)
         }

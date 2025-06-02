@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -37,6 +39,7 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.ColumnTalleres
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
+import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +50,8 @@ fun TalleresScreen(
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
     navigateToInfo: () -> Unit,
-    navigateToModificarTaller: () -> Unit
+    navigateToModificarTaller: (String, String) -> Unit,
+    navigateToMenuAdmin: () -> Unit
 ){
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -104,7 +108,22 @@ fun TalleresScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
+            if (sessionManager.getRole()?.lowercase() == "admin") {
+                MyFooterAdmin(navigateToMenuAdmin, navigateToTalleres, navigateToInfo)
+            } else {
+                MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
+            }
+        },
+        floatingActionButton = {
+            if (sessionManager.getRole()?.lowercase() == "admin") {
+                FloatingActionButton(
+                    onClick = { navigateToModificarTaller("id", "insertar") },
+                    containerColor = Principal,
+                    contentColor = Color.Black
+                ) {
+                    Icon(Icons.Default.Add, contentDescription = "Agregar Taller")
+                }
+            }
         }
     ) { innerPadding ->
         HorizontalDivider(
@@ -127,7 +146,13 @@ fun TalleresScreen(
                     tallerId = taller?.id ?: "No existe el taller"
                 )
             },
-            onNavigateToModificarTaller = navigateToModificarTaller
+            onNavigateToModificarTaller = navigateToModificarTaller,
+            onEliminarTaller = { taller ->
+                viewModel.eliminarTaller(
+                    token = sessionManager.getToken().toString(),
+                    id = taller.id
+                )
+            }
         )
     }
 

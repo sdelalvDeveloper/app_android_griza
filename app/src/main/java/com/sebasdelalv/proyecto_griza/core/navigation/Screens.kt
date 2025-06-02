@@ -40,7 +40,7 @@ object CambiarPassword
 object MenuAdmin
 
 @Serializable
-object ModificarTaller
+data class ModificarTaller(val id: String, val tipoScreen: String)
 
 @Serializable
 object Usuarios

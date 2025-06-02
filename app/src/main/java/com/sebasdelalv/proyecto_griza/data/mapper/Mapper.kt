@@ -1,7 +1,5 @@
 package com.sebasdelalv.proyecto_griza.data.mapper
 
-
-import android.util.Log
 import com.sebasdelalv.proyecto_griza.data.network.dto.LoginResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
@@ -14,6 +12,7 @@ import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 fun LoginResponse.toDomain(): LoginResult {
     return LoginResult(
@@ -36,9 +35,16 @@ fun List<RegisterUserResponse>.toUserDomain(): List<RegisterResult> {
 }
 
 fun Date.toFechaDesglosada(): FechaDesglosada {
+    val utc = TimeZone.getTimeZone("UTC")
+
     val diaFormat = SimpleDateFormat("dd", Locale.getDefault())
+    diaFormat.timeZone = utc
+
     val mesFormat = SimpleDateFormat("MMM", Locale.getDefault())
+    mesFormat.timeZone = utc
+
     val horaFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
+    horaFormat.timeZone = utc
 
     return FechaDesglosada(
         dia = diaFormat.format(this),
@@ -46,6 +52,7 @@ fun Date.toFechaDesglosada(): FechaDesglosada {
         hora = horaFormat.format(this)
     )
 }
+
 
 fun List<TallerResponse>.toTallerDomain(): List<TallerResult> {
     return this.map { it.toDomain() }

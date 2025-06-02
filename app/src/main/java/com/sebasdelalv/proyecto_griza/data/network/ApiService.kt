@@ -6,6 +6,7 @@ import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterReservaRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.ReservaResponse
+import com.sebasdelalv.proyecto_griza.data.network.dto.TallerRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.TallerResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.UpdatePasswordRequest
 import retrofit2.Response
@@ -99,5 +100,30 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("username") username: String,
     ): Response<RegisterUserResponse>
+
+    @POST("talleres/update/{id}")
+    suspend fun modificarTaller(
+        @Header("Authorization") token: String,
+        @Path("id") id: String,
+        @Body taller: TallerRequest
+    ): Response<TallerResponse>
+
+    @POST("talleres/register")
+    suspend fun insertTaller(
+        @Header("Authorization") token: String,
+        @Body taller: TallerRequest
+    ): Response<TallerResponse>
+
+    @DELETE("talleres/delete/{tallerID}")
+    suspend fun deleteTaller(
+        @Header("Authorization") token: String,
+        @Path("tallerID") tallerID: String
+    ): Response<Void>
+
+    @DELETE("reservas/delete/{id}")
+    suspend fun deleteReservasByIdTaller(
+        @Header("Authorization") token: String,
+        @Path("id") id: String
+    ): Response<Void>
 
 }
