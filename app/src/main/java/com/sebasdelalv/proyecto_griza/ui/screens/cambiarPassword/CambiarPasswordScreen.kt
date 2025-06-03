@@ -1,4 +1,4 @@
-package com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword
+package com.sebasdelalv.proyecto_griza.ui.screens.cambiarPassword
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
@@ -31,10 +32,10 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
 fun CambiarPasswordScreen(
-    viewModel: CambiarPasswordViewModel,
     navigateToBack: () -> Unit,
     navigateToPerfil: () -> Unit
 ) {
+    val viewModel: CambiarPasswordViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp

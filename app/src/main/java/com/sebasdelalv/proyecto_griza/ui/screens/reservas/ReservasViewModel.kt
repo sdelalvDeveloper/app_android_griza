@@ -2,16 +2,17 @@ package com.sebasdelalv.proyecto_griza.ui.screens.reservas
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class ReservasViewModel : ViewModel() {
-    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
+@HiltViewModel
+class ReservasViewModel @Inject constructor(private val reservaRepository: ReservaRepository) : ViewModel() {
 
     private val _reservas = MutableStateFlow<List<ReservaResult>>(emptyList())
     val reservas: StateFlow<List<ReservaResult>> = _reservas.asStateFlow()

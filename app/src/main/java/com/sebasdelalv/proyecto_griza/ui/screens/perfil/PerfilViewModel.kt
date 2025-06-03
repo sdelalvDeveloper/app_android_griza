@@ -2,21 +2,22 @@ package com.sebasdelalv.proyecto_griza.ui.screens.perfil
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
-import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 import kotlin.fold
 
-class PerfilViewModel() : ViewModel() {
-
-    private val repository: AuthRepository = AuthRepositoryImpl()
-    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
+@HiltViewModel
+class PerfilViewModel @Inject constructor(
+    private val repository: AuthRepository,
+    private val reservaRepository: ReservaRepository
+) : ViewModel() {
 
     private val _saldo = MutableStateFlow<Int?>(null)
     val saldo: StateFlow<Int?> = _saldo

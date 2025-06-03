@@ -2,17 +2,17 @@ package com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
-import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class EliminarCuentaViewModel: ViewModel() {
-    private val repository: AuthRepository = AuthRepositoryImpl()
-    private val reservaRepository = ReservaRepositoryImpl()
+@HiltViewModel
+class EliminarCuentaViewModel @Inject constructor(private val repository: AuthRepository, private val reservaRepository: ReservaRepository): ViewModel() {
+
     // Variables para almacenar los valores de los campos
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> = _username

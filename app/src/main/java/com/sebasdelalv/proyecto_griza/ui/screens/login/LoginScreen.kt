@@ -1,6 +1,5 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.login
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -31,6 +30,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
@@ -38,14 +38,13 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
-
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
     navigateToSignup:()-> Unit,
     navigateToMenu: () -> Unit,
     navigateToMenuAdmin: () -> Unit
 ) {
+    val viewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp

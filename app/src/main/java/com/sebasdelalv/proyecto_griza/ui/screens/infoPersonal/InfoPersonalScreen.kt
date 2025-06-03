@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
@@ -31,9 +32,9 @@ import com.sebasdelalv.proyecto_griza.utils.InfoItem
 
 @Composable
 fun InfoPersonalScreen(
-    viewModel: InfoPersonalViewModel = viewModel(),
     navigateToBack: () -> Unit
 ) {
+    val viewModel: InfoPersonalViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp

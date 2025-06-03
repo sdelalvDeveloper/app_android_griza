@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -36,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
@@ -43,7 +45,8 @@ import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
-fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
+fun SignupScreen(navigateToLogin: () -> Unit) {
+    val viewModel: SignupViewModel = hiltViewModel()
     val context = LocalContext.current
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
@@ -91,7 +94,7 @@ fun SignupScreen(viewModel: SignupViewModel, navigateToLogin: () -> Unit) {
             ) {
                 // Flecha de retroceso
                 Icon(
-                    imageVector = Icons.Default.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Volver atrás",
                     modifier = Modifier
                         .align(Alignment.CenterStart)

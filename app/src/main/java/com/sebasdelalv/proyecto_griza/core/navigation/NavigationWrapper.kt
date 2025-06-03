@@ -3,52 +3,28 @@ package com.sebasdelalv.proyecto_griza.core.navigation
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
-import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.CambiarPassword.CambiarPasswordViewModel
+import com.sebasdelalv.proyecto_griza.ui.screens.cambiarPassword.CambiarPasswordScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.cover.CoverScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.eliminarCuenta.EliminarCuentaViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.info.InfoScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.infoPersonal.InfoPersonalScreen
 import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.menu.MenuViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.menuAdmin.MenuAdminScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.menuAdmin.MenuAdminViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.perfil.PerfilViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.reservas.ReservasViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.signin.SignupViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.talleres.ModificarTalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.talleres.TalleresViewModel
 import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosScreen
-import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosViewModel
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun NavigationWrapper(
-    loginViewModel: LoginViewModel,
-    signupViewModel: SignupViewModel,
-    menuViewModel: MenuViewModel,
-    talleresViewModel: TalleresViewModel,
-    reservasViewModel: ReservasViewModel,
-    perfilViewModel: PerfilViewModel,
-    eliminarCuentaViewModel: EliminarCuentaViewModel,
-    cambiarPasswordViewModel: CambiarPasswordViewModel,
-    menuAdminViewModel: MenuAdminViewModel,
-    usuariosViewModel: UsuariosViewModel,
-    modificarTalleresViewModel: ModificarTalleresViewModel
-) {
+fun NavigationWrapper() {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = Login){
         composable<Cover>{
@@ -57,7 +33,6 @@ fun NavigationWrapper(
 
         composable<Login>{
             LoginScreen(
-                viewModel = loginViewModel,
                 navigateToSignup = { navController.navigate(SignUp) },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToMenuAdmin = { navController.navigate(MenuAdmin)}
@@ -65,12 +40,11 @@ fun NavigationWrapper(
         }
 
         composable<SignUp> {
-            SignupScreen(signupViewModel) { navController.navigate(Login) }
+            SignupScreen { navController.navigate(Login) }
         }
 
         composable<Menu> {
             MenuScreen(
-                viewModel = menuViewModel,
                 navigateToLogin = {
                     navController.navigate(Login) {
                         popUpTo(0) { inclusive = true } // Borra todo el backstack
@@ -87,7 +61,6 @@ fun NavigationWrapper(
 
         composable<Perfil> {
             PerfilScreen(
-                viewModel = perfilViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
@@ -101,7 +74,6 @@ fun NavigationWrapper(
 
         composable<Talleres> {
             TalleresScreen(
-                viewModel = talleresViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
@@ -123,7 +95,6 @@ fun NavigationWrapper(
 
         composable<Reservas> {
             ReservasScreen(
-                viewModel = reservasViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
@@ -138,7 +109,6 @@ fun NavigationWrapper(
 
         composable<EliminarCuenta> {
             EliminarCuentaScreen(
-                viewModel = eliminarCuentaViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToLogin = {
                     navController.navigate(Login) {
@@ -151,7 +121,6 @@ fun NavigationWrapper(
 
         composable<CambiarPassword> {
             CambiarPasswordScreen(
-                viewModel = cambiarPasswordViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToPerfil = { navController.navigate(Perfil) }
             )
@@ -159,7 +128,6 @@ fun NavigationWrapper(
 
         composable<MenuAdmin> {
             MenuAdminScreen(
-                viewModel = menuAdminViewModel,
                 navigateToLogin = {
                     navController.navigate(Login) {
                         popUpTo(0) { inclusive = true } // Borra todo el backstack
@@ -176,7 +144,6 @@ fun NavigationWrapper(
 
         composable<Usuarios> {
             UsuariosScreen(
-                viewModel = usuariosViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToTalleres = { navController.navigate(Talleres) },
@@ -189,7 +156,6 @@ fun NavigationWrapper(
             ModificarTalleresScreen(
                 id = taller.id,
                 tipoScreen = taller.tipoScreen,
-                viewModel = modificarTalleresViewModel,
                 navigateToBack = { navController.popBackStack() },
                 navigateToTalleres = { navController.navigate(Talleres) },
             )

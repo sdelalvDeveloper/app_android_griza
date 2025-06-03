@@ -45,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -62,7 +63,6 @@ import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuScreen(
-    viewModel: MenuViewModel,
     navigateToLogin: () -> Unit,
     navigateToPerfil: () -> Unit,
     navigateToMenu: () -> Unit,
@@ -70,6 +70,7 @@ fun MenuScreen(
     navigateToInfo: () -> Unit,
     navigateToReservas: () -> Unit
 ) {
+    val viewModel: MenuViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
 

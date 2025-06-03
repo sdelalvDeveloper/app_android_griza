@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -51,7 +52,6 @@ import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PerfilScreen(
-    viewModel: PerfilViewModel,
     navigateToBack: () -> Unit,
     navigateToMenu: () ->Unit,
     navigateToTalleres: () -> Unit,
@@ -61,6 +61,7 @@ fun PerfilScreen(
     navigateToEliminarCuenta: () -> Unit,
     navigateToCambiarPassword: () -> Unit
 ) {
+    val viewModel: PerfilViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp

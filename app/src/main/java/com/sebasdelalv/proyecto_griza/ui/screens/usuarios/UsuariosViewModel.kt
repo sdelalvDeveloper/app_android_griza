@@ -2,19 +2,21 @@ package com.sebasdelalv.proyecto_griza.ui.screens.usuarios
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
-import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class UsuariosViewModel: ViewModel() {
-    private val usuarioRepository: AuthRepository = AuthRepositoryImpl()
-    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
+@HiltViewModel
+class UsuariosViewModel @Inject constructor(
+    private val usuarioRepository: AuthRepository,
+    private val reservaRepository: ReservaRepository
+): ViewModel() {
 
     private val _usuarios = MutableStateFlow<List<RegisterResult>>(emptyList())
     val usuarios: StateFlow<List<RegisterResult>> = _usuarios.asStateFlow()

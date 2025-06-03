@@ -31,6 +31,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -45,7 +46,6 @@ import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TalleresScreen(
-    viewModel: TalleresViewModel,
     navigateToBack: () -> Unit,
     navigateToMenu: () -> Unit,
     navigateToTalleres: () -> Unit,
@@ -53,6 +53,7 @@ fun TalleresScreen(
     navigateToModificarTaller: (String, String) -> Unit,
     navigateToMenuAdmin: () -> Unit
 ){
+    val viewModel: TalleresViewModel = hiltViewModel()
     val screenWidth = LocalConfiguration.current.screenWidthDp
 
     val context = LocalContext.current

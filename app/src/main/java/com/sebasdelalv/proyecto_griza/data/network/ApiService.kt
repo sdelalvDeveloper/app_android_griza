@@ -58,7 +58,7 @@ interface ApiService {
         @Path("username") username: String
     ): Response<List<ReservaResponse>>
 
-    @DELETE("reservas/{id}/taller/{tallerID}")
+    @DELETE("reservas/delete/{id}/taller/{tallerID}")
     suspend fun deleteReserva(
         @Header("Authorization") token: String,
         @Path("id") reservaId: String,

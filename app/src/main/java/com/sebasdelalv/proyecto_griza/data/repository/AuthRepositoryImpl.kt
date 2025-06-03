@@ -3,7 +3,7 @@ package com.sebasdelalv.proyecto_griza.data.repository
 import com.google.gson.Gson
 import com.sebasdelalv.proyecto_griza.data.mapper.toDomain
 import com.sebasdelalv.proyecto_griza.data.mapper.toUserDomain
-import com.sebasdelalv.proyecto_griza.data.network.RetrofitClient
+import com.sebasdelalv.proyecto_griza.data.network.ApiService
 import com.sebasdelalv.proyecto_griza.data.network.dto.ErrorResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.LoginRequest
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterUserRequest
@@ -11,12 +11,14 @@ import com.sebasdelalv.proyecto_griza.data.network.dto.UpdatePasswordRequest
 import com.sebasdelalv.proyecto_griza.domain.model.LoginResult
 import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
+import javax.inject.Inject
 
-class AuthRepositoryImpl() : AuthRepository {
+
+class AuthRepositoryImpl @Inject constructor(private val api: ApiService) : AuthRepository {
 
     override suspend fun login(username: String, password: String): Result<LoginResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().login(LoginRequest(username, password))
+            val response = api.login(LoginRequest(username, password))
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -46,7 +48,7 @@ class AuthRepositoryImpl() : AuthRepository {
         passwordRepeat: String
     ): Result<RegisterResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().register(RegisterUserRequest(username, email, telefono, password, passwordRepeat))
+            val response = api.register(RegisterUserRequest(username, email, telefono, password, passwordRepeat))
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -73,7 +75,7 @@ class AuthRepositoryImpl() : AuthRepository {
         token: String
     ): Result<RegisterResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().getUser("Bearer $token", username)
+            val response = api.getUser("Bearer $token", username)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -101,7 +103,7 @@ class AuthRepositoryImpl() : AuthRepository {
         password: String
     ): Result<RegisterResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().deleteUser("Bearer $token", username, password)
+            val response = api.deleteUser("Bearer $token", username, password)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -125,7 +127,7 @@ class AuthRepositoryImpl() : AuthRepository {
 
     override suspend fun update(token: String, usuario: UpdatePasswordRequest): Result<Boolean> {
         return try {
-            val response = RetrofitClient.getRetrofit().updatePassword("Bearer $token",usuario)
+            val response = api.updatePassword("Bearer $token",usuario)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it)
@@ -149,7 +151,7 @@ class AuthRepositoryImpl() : AuthRepository {
 
     override suspend fun getAll(token: String): Result<List<RegisterResult>> {
         return try {
-            val response = RetrofitClient.getRetrofit().getAllUser("Bearer $token")
+            val response = api.getAllUser("Bearer $token")
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toUserDomain())
@@ -176,7 +178,7 @@ class AuthRepositoryImpl() : AuthRepository {
         username: String
     ): Result<RegisterResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().activarBono("Bearer $token", username)
+            val response = api.activarBono("Bearer $token", username)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())

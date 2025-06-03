@@ -44,6 +44,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
@@ -54,7 +55,6 @@ import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MenuAdminScreen(
-    viewModel: MenuAdminViewModel,
     navigateToLogin: () -> Unit,
     navigateToMenuAdmin: () -> Unit,
     navigateToTalleres: () -> Unit,
@@ -62,6 +62,7 @@ fun MenuAdminScreen(
     navigateToInfo: () -> Unit,
     navigateToUsuarios: () -> Unit
 ) {
+    val viewModel: MenuAdminViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
 

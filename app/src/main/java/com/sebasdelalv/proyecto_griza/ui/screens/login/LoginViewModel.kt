@@ -1,21 +1,20 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.login
 
-
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class LoginViewModel: ViewModel() {
-
-    private val repository: AuthRepository = AuthRepositoryImpl()
+@HiltViewModel
+class LoginViewModel @Inject constructor(private val repository: AuthRepository): ViewModel() {
 
     // Estado del nombre de usuario
     private val _username = MutableStateFlow("")

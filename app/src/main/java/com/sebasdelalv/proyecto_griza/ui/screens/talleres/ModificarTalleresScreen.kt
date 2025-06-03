@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
@@ -32,10 +33,10 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 fun ModificarTalleresScreen(
     id: String,
     tipoScreen: String,
-    viewModel: ModificarTalleresViewModel,
     navigateToBack: () -> Unit,
     navigateToTalleres: () -> Unit
 ) {
+    val viewModel: ModificarTalleresViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp

@@ -1,17 +1,17 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.signin
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SignupViewModel: ViewModel() {
+@HiltViewModel
+class SignupViewModel @Inject constructor(private val repository: AuthRepository): ViewModel() {
 
-    private val repository: AuthRepository = AuthRepositoryImpl()
     // Variables para almacenar los valores de los campos
     private val _username = MutableStateFlow("")
     val username: StateFlow<String> = _username

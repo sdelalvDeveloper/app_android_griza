@@ -2,16 +2,16 @@ package com.sebasdelalv.proyecto_griza.ui.screens.infoPersonal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
 import com.sebasdelalv.proyecto_griza.domain.repository.AuthRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class InfoPersonalViewModel : ViewModel() {
-
-    private val repository: AuthRepository = AuthRepositoryImpl()
+@HiltViewModel
+class InfoPersonalViewModel @Inject constructor(private val repository: AuthRepository) : ViewModel() {
 
     private val _userInfo = MutableStateFlow<RegisterResult?>(null)
     val userInfo: StateFlow<RegisterResult?> = _userInfo

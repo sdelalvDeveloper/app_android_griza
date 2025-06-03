@@ -2,20 +2,22 @@ package com.sebasdelalv.proyecto_griza.ui.screens.menu
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
-import com.sebasdelalv.proyecto_griza.data.repository.TallerRepositoryImpl
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
-import com.sebasdelalv.proyecto_griza.domain.repository.TallerRespository
+import com.sebasdelalv.proyecto_griza.domain.repository.TallerRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class MenuViewModel: ViewModel() {
-    private val tallerRepository: TallerRespository = TallerRepositoryImpl()
-    private val reservaRepository: ReservaRepository = ReservaRepositoryImpl()
+@HiltViewModel
+class MenuViewModel @Inject constructor(
+    private val tallerRepository: TallerRepository,
+    private val reservaRepository: ReservaRepository
+): ViewModel() {
 
     private val _talleres = MutableStateFlow<List<TallerResult>>(emptyList())
     val talleres: StateFlow<List<TallerResult>> = _talleres.asStateFlow()

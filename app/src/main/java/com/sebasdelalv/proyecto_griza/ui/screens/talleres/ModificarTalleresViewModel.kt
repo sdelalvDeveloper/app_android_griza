@@ -3,20 +3,21 @@ package com.sebasdelalv.proyecto_griza.ui.screens.talleres
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sebasdelalv.proyecto_griza.data.network.dto.TallerRequest
-import com.sebasdelalv.proyecto_griza.data.repository.TallerRepositoryImpl
-import com.sebasdelalv.proyecto_griza.domain.repository.TallerRespository
+import com.sebasdelalv.proyecto_griza.domain.repository.TallerRepository
 import com.sebasdelalv.proyecto_griza.utils.esFechaValida
 import com.sebasdelalv.proyecto_griza.utils.esHoraValida
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
-import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import javax.inject.Inject
 
-class ModificarTalleresViewModel: ViewModel() {
-    private val repository: TallerRespository = TallerRepositoryImpl()
+@HiltViewModel
+class ModificarTalleresViewModel @Inject constructor(private val repository: TallerRepository): ViewModel() {
+
     // Variables para almacenar los valores de los campos
     private val _titulo = MutableStateFlow("")
     val titulo: StateFlow<String> = _titulo

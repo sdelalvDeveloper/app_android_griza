@@ -3,20 +3,21 @@ package com.sebasdelalv.proyecto_griza.data.repository
 import com.google.gson.Gson
 import com.sebasdelalv.proyecto_griza.data.mapper.toDomain
 import com.sebasdelalv.proyecto_griza.data.mapper.toReservaDomain
-import com.sebasdelalv.proyecto_griza.data.network.RetrofitClient
+import com.sebasdelalv.proyecto_griza.data.network.ApiService
 import com.sebasdelalv.proyecto_griza.data.network.dto.ErrorResponse
 import com.sebasdelalv.proyecto_griza.data.network.dto.RegisterReservaRequest
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.domain.repository.ReservaRepository
+import javax.inject.Inject
 
-class ReservaRepositoryImpl(): ReservaRepository {
+class ReservaRepositoryImpl @Inject constructor(private val api: ApiService): ReservaRepository {
     override suspend fun insertReserva(
         token: String,
         username: String,
         tallerId: String
     ): Result<ReservaResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().insertReserva("Bearer $token", RegisterReservaRequest(username, tallerId))
+            val response = api.insertReserva("Bearer $token", RegisterReservaRequest(username, tallerId))
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -43,7 +44,7 @@ class ReservaRepositoryImpl(): ReservaRepository {
         username: String
     ): Result<List<ReservaResult>> {
         return try {
-            val response = RetrofitClient.getRetrofit().getReservasByUsername("Bearer $token", username)
+            val response = api.getReservasByUsername("Bearer $token", username)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toReservaDomain())
@@ -71,7 +72,7 @@ class ReservaRepositoryImpl(): ReservaRepository {
         tallerID: String
     ): Result<Unit> {
         return try {
-            val response = RetrofitClient.getRetrofit()
+            val response = api
                 .deleteReserva("Bearer $token", id, tallerID)
             if (response.isSuccessful) {
                 Result.success(Unit)
@@ -95,7 +96,7 @@ class ReservaRepositoryImpl(): ReservaRepository {
         username: String
     ): Result<ReservaResult> {
         return try {
-            val response = RetrofitClient.getRetrofit().getFirstReservaByUsername("Bearer $token", username)
+            val response = api.getFirstReservaByUsername("Bearer $token", username)
             if (response.isSuccessful) {
                 response.body()?.let {
                     Result.success(it.toDomain())
@@ -122,7 +123,7 @@ class ReservaRepositoryImpl(): ReservaRepository {
         username: String
     ): Result<Unit> {
         return try {
-            val response = RetrofitClient.getRetrofit().deleteReservaAllByUsername("Bearer $token", username)
+            val response = api.deleteReservaAllByUsername("Bearer $token", username)
             if (response.isSuccessful) {
                 Result.success(Unit)
             } else {
@@ -147,7 +148,7 @@ class ReservaRepositoryImpl(): ReservaRepository {
         tallerID: String
     ): Result<Unit> {
         return try {
-            val response = RetrofitClient.getRetrofit()
+            val response = api
                 .deleteReservasByIdTaller("Bearer $token", tallerID)
             if (response.isSuccessful) {
                 Result.success(Unit)
