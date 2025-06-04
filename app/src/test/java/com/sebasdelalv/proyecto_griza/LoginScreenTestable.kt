@@ -1,4 +1,4 @@
-package com.sebasdelalv.proyecto_griza.ui.screens.login
+package com.sebasdelalv.proyecto_griza
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -30,25 +30,24 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.navigation.compose.hiltViewModel
-import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
+import com.sebasdelalv.proyecto_griza.ui.screens.login.LoginViewModel
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
-fun LoginScreen(
+fun LoginScreenTestable(
     viewModel: LoginViewModel,
-    navigateToSignup:()-> Unit,
-    navigateToMenu: () -> Unit,
-    navigateToMenuAdmin: () -> Unit
+    navigateToSignup: () -> Unit = {},
+    navigateToMenu: () -> Unit = {},
+    navigateToMenuAdmin: () -> Unit = {}
 ) {
-    val viewModel: LoginViewModel = hiltViewModel()
     val context = LocalContext.current
     val sessionManager = remember { SessionManager(context) }
     val screenWidth = LocalConfiguration.current.screenWidthDp
+
     val username by viewModel.username.collectAsState()
     val password by viewModel.password.collectAsState()
     val enabledButton by viewModel.isButtonEnabled.collectAsState()
@@ -95,7 +94,7 @@ fun LoginScreen(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it)}
+                TextInput(username, "Nombre de usuario") { viewModel.onUsernameChanged(it) }
                 Spacer(modifier = Modifier.fillMaxHeight(0.1f))
                 PassswordInput(
                     value = password,
@@ -152,6 +151,7 @@ fun LoginScreen(
             }
         }
     }
+
     if (isDialogOpen) {
         AlertDialog(
             onDismissRequest = { viewModel.closeErrorDialog() },

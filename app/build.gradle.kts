@@ -18,7 +18,8 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "dagger.hilt.android.testing.HiltTestRunner"
+
     }
 
     buildTypes {
@@ -47,6 +48,11 @@ android {
         resources {
             excludes += "/META-INF/gradle/incremental.annotation.processors"
         }
+    }
+
+    testOptions {
+        execution = "host"
+        unitTests.isIncludeAndroidResources = true
     }
 }
 
@@ -81,12 +87,19 @@ dependencies {
     implementation(libs.kotlinx.coroutines.android)
 
     // Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.android.compiler)
-
+    implementation("com.google.dagger:hilt-android:2.54")
+    kapt("com.google.dagger:hilt-android-compiler:2.54")
     implementation(libs.hilt.navigation)
-    implementation(libs.hilt.android)
-    implementation(libs.hilt.compiler)
+
+    // Para pruebas instrumentadas con Hilt
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.54")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.54")
+
+    // Para usar composeTestRule con Hilt
+    debugImplementation(libs.ui.test.manifest)
+
+    testImplementation(libs.ui.test.junit4)
+    testImplementation(libs.robolectric)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -95,6 +108,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    // Testing
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.mockito.kotlin)
+    testImplementation(kotlin("test"))
 }
 
 kapt {

@@ -1,5 +1,6 @@
-package com.sebasdelalv.proyecto_griza.data.network
+package com.sebasdelalv.proyecto_griza.di
 
+import com.sebasdelalv.proyecto_griza.data.network.ApiService
 import com.sebasdelalv.proyecto_griza.data.repository.AuthRepositoryImpl
 import com.sebasdelalv.proyecto_griza.data.repository.ReservaRepositoryImpl
 import com.sebasdelalv.proyecto_griza.data.repository.TallerRepositoryImpl
