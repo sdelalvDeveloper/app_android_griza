@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 
-class SessionManager(context: Context) {
+class SessionManager(context: Context): ISessionManager {
     private val sharedPreferences: SharedPreferences =
         context.getSharedPreferences("UserSession", Context.MODE_PRIVATE)
 
@@ -24,17 +24,17 @@ class SessionManager(context: Context) {
     }
 
     // Obtener el username
-    fun getUsername(): String? {
+    override fun getUsername(): String? {
         return sharedPreferences.getString(KEY_USERNAME, null)
     }
 
     // Obtener el token
-    fun getToken(): String? {
+    override fun getToken(): String? {
         return sharedPreferences.getString(KEY_TOKEN, null)
     }
 
     // Obtener el rol
-    fun getRole(): String? {
+    override fun getRole(): String? {
         return sharedPreferences.getString(KEY_ROLE, null)
     }
 

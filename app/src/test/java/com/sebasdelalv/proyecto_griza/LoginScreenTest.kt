@@ -31,7 +31,6 @@ class LoginScreenTest {
     @Before
     fun setup() {
         fakeAuthRepository = FakeAuthRepository()
-
         viewModel = LoginViewModel(fakeAuthRepository)
     }
 

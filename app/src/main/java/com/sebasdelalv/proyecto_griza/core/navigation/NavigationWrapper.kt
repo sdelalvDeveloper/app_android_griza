@@ -28,7 +28,6 @@ import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosScreen
 @Composable
 fun NavigationWrapper() {
     val navController = rememberNavController()
-    val viewModel: LoginViewModel = hiltViewModel()
     NavHost(navController = navController, startDestination = Login){
         composable<Cover>{
             CoverScreen { navController.navigate(Login) }
@@ -36,7 +35,6 @@ fun NavigationWrapper() {
 
         composable<Login>{
             LoginScreen(
-                viewModel = viewModel,
                 navigateToSignup = { navController.navigate(SignUp) },
                 navigateToMenu = { navController.navigate(Menu) },
                 navigateToMenuAdmin = { navController.navigate(MenuAdmin)}

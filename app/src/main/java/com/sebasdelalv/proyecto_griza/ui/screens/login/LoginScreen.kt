@@ -40,7 +40,6 @@ import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
 fun LoginScreen(
-    viewModel: LoginViewModel,
     navigateToSignup:()-> Unit,
     navigateToMenu: () -> Unit,
     navigateToMenuAdmin: () -> Unit
