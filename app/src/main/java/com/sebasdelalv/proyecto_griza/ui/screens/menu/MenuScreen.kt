@@ -2,6 +2,7 @@ package com.sebasdelalv.proyecto_griza.ui.screens.menu
 
 import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
@@ -58,6 +59,7 @@ import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.SliceImages
 import com.sebasdelalv.proyecto_griza.utils.SliceTalleres
 import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
+import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -98,6 +100,29 @@ fun MenuScreen(
             viewModel.toastShown()
         }
     }
+
+    var backPressedOnce by remember { mutableStateOf(false) }
+    var triggerReset by remember { mutableStateOf(false) }
+
+    BackHandler {
+        if (backPressedOnce) {
+            sessionManager.clearSession()
+            navigateToLogin()
+        } else {
+            backPressedOnce = true
+            triggerReset = true
+            Toast.makeText(context, "Presiona otra vez para cerrar sesión", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    LaunchedEffect(triggerReset) {
+        if (triggerReset) {
+            delay(2000)
+            backPressedOnce = false
+            triggerReset = false
+        }
+    }
+
 
     val lifecycleOwner = LocalLifecycleOwner.current
     DisposableEffect(lifecycleOwner) {

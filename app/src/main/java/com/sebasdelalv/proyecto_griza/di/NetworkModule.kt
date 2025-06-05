@@ -23,7 +23,7 @@ object NetworkModule {
     @Provides
     fun provideRetrofit(): ApiService {
         return Retrofit.Builder()
-            .baseUrl("http://192.168.1.103:8080/")
+            .baseUrl("https://griza.onrender.com/")
             .addConverterFactory(GsonConverterFactory.create()) // Convierte JSON a objetos
             .build()
             .create(ApiService::class.java)

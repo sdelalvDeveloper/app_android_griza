@@ -1,6 +1,8 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.menuAdmin
 
 import android.os.Build
+import android.widget.Toast
+import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -29,6 +31,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -50,6 +53,7 @@ import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
+import kotlinx.coroutines.delay
 
 @RequiresApi(Build.VERSION_CODES.O)
 @OptIn(ExperimentalMaterial3Api::class)
@@ -73,6 +77,28 @@ fun MenuAdminScreen(
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
     var expanded by remember { mutableStateOf(false) }
+
+    var backPressedOnce by remember { mutableStateOf(false) }
+    var triggerReset by remember { mutableStateOf(false) }
+
+    BackHandler {
+        if (backPressedOnce) {
+            sessionManager.clearSession()
+            navigateToLogin()
+        } else {
+            backPressedOnce = true
+            triggerReset = true
+            Toast.makeText(context, "Presiona otra vez para cerrar sesión", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    LaunchedEffect(triggerReset) {
+        if (triggerReset) {
+            delay(2000)
+            backPressedOnce = false
+            triggerReset = false
+        }
+    }
 
     Scaffold(
         topBar = {

@@ -43,13 +43,14 @@ import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
 import com.sebasdelalv.proyecto_griza.utils.ColumnUsuarios
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
+import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 
 @OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun UsuariosScreen(
     navigateToBack: () -> Unit,
-    navigateToMenu: () -> Unit,
+    navigateToMenuAdmin: () -> Unit,
     navigateToTalleres: () -> Unit,
     navigateToInfo: () -> Unit
 ){
@@ -118,7 +119,7 @@ fun UsuariosScreen(
             )
         },
         bottomBar = {
-            MyFooter(navigateToMenu, navigateToTalleres, navigateToInfo)
+            MyFooterAdmin(navigateToMenuAdmin, navigateToTalleres, navigateToInfo)
         }
     ) { innerPadding ->
         HorizontalDivider(

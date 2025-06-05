@@ -28,7 +28,7 @@ import com.sebasdelalv.proyecto_griza.ui.screens.usuarios.UsuariosScreen
 @Composable
 fun NavigationWrapper() {
     val navController = rememberNavController()
-    NavHost(navController = navController, startDestination = Login){
+    NavHost(navController = navController, startDestination = Cover){
         composable<Cover>{
             CoverScreen { navController.navigate(Login) }
         }
@@ -147,7 +147,7 @@ fun NavigationWrapper() {
         composable<Usuarios> {
             UsuariosScreen(
                 navigateToBack = { navController.popBackStack() },
-                navigateToMenu = { navController.navigate(Menu) },
+                navigateToMenuAdmin = { navController.navigate(MenuAdmin) },
                 navigateToTalleres = { navController.navigate(Talleres) },
                 navigateToInfo = { navController.navigate(Info) }
             )
