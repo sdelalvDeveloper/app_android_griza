@@ -15,6 +15,7 @@ import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 
 interface ApiService {
@@ -95,13 +96,13 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<List<RegisterUserResponse>>
 
-    @POST("usuarios/activarBono/{username}")
+    @PUT("usuarios/activarBono/{username}")
     suspend fun activarBono(
         @Header("Authorization") token: String,
         @Path("username") username: String,
     ): Response<RegisterUserResponse>
 
-    @POST("talleres/update/{id}")
+    @PUT("talleres/update/{id}")
     suspend fun modificarTaller(
         @Header("Authorization") token: String,
         @Path("id") id: String,
