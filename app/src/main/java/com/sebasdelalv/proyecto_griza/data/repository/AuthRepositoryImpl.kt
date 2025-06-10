@@ -101,13 +101,11 @@ class AuthRepositoryImpl @Inject constructor(private val api: ApiService) : Auth
         token: String,
         username: String,
         password: String
-    ): Result<RegisterResult> {
+    ): Result<Unit> {
         return try {
             val response = api.deleteUser("Bearer $token", username, password)
             if (response.isSuccessful) {
-                response.body()?.let {
-                    Result.success(it.toDomain())
-                } ?: Result.failure(Exception("Respuesta vacía"))
+                Result.success(Unit)
             } else {
                 val errorBodyString = response.errorBody()?.string()
                 val errorMessage = try {

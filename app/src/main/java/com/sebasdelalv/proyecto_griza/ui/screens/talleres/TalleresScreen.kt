@@ -18,6 +18,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -38,6 +39,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.ColumnTalleres
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
@@ -163,8 +165,8 @@ fun TalleresScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

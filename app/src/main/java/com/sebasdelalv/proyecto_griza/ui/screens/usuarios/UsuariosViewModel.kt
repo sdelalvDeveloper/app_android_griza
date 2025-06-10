@@ -62,7 +62,7 @@ class UsuariosViewModel @Inject constructor(
 
     fun eliminarUsuario(token: String, username: String) {
         viewModelScope.launch {
-            val result = usuarioRepository.delete(token, username, "")
+            val result = usuarioRepository.delete(token, username, "admin")
             result.fold(
                 onSuccess = {
                     _usuarios.value = _usuarios.value.filterNot { it.username == username}

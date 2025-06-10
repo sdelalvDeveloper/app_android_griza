@@ -29,8 +29,6 @@ class TalleresScreenTest {
     @get:Rule
     val composeTestRule = createComposeRule()
 
-
-
     private lateinit var viewModel: TalleresViewModel
 
     @Before

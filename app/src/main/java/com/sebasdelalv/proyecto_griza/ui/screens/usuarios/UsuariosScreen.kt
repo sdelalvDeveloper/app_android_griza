@@ -41,6 +41,8 @@ import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.domain.model.RegisterResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.ColumnUsuarios
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
@@ -149,7 +151,7 @@ fun UsuariosScreen(
                         usuarioSeleccionado = null
                     }
                 ) {
-                    Text("Activar bono")
+                    Text("Activar bono", color = VerdeDialog)
                 }
             },
             dismissButton = {
@@ -162,7 +164,7 @@ fun UsuariosScreen(
                         usuarioSeleccionado = null
                     }
                 ) {
-                    Text("Eliminar", color = Color.Red)
+                    Text("Eliminar", color = RojoAlert)
                 }
             }
         )
@@ -174,7 +176,7 @@ fun UsuariosScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
                     Text("Aceptar")
                 }
             }

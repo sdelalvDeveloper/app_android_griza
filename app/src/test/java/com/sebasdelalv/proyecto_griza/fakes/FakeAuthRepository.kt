@@ -38,7 +38,7 @@ class FakeAuthRepository : AuthRepository {
         token: String,
         username: String,
         password: String
-    ): Result<RegisterResult> {
+    ): Result<Unit> {
         TODO("Not yet implemented")
     }
 

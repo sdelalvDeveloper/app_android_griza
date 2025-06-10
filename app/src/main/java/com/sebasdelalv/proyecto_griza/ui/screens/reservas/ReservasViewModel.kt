@@ -23,6 +23,17 @@ class ReservasViewModel @Inject constructor(private val reservaRepository: Reser
     private val _isDialogOpen = MutableStateFlow(false)
     val isDialogOpen: StateFlow<Boolean> = _isDialogOpen
 
+    private val _toastMessage = MutableStateFlow<String?>(null)
+    val toastMessage: StateFlow<String?> = _toastMessage
+
+    fun showToast(message: String) {
+        _toastMessage.value = message
+    }
+
+    fun toastShown() {
+        _toastMessage.value = null
+    }
+
     fun getReservasUsuario(token: String, username: String) {
         viewModelScope.launch {
             val result = reservaRepository.getReservaByUsername(token, username)
@@ -49,6 +60,7 @@ class ReservasViewModel @Inject constructor(private val reservaRepository: Reser
             result.fold(
                 onSuccess = {
                     _reservas.value = _reservas.value.filterNot { it.id == reserva.id }
+                    showToast("Reserva eliminada")
                 },
                 onFailure = { error ->
                     _dialogMessage.value = error.message ?: "Error al eliminar"
@@ -57,6 +69,7 @@ class ReservasViewModel @Inject constructor(private val reservaRepository: Reser
             )
         }
     }
+
 
     fun closeErrorDialog() {
         _isDialogOpen.value = false

@@ -1,6 +1,7 @@
 package com.sebasdelalv.proyecto_griza.utils
 
 import androidx.compose.foundation.gestures.snapping.rememberSnapFlingBehavior
+import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -17,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 
 @Composable
 fun PassswordInput(
@@ -49,7 +51,12 @@ fun PassswordInput(
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = Color.Black,
             unfocusedBorderColor = Color.Gray,
-            cursorColor = Color.Gray
+            cursorColor = Color.Gray,
+            focusedLabelColor = Color.Black, // <- Cambia el color de la etiqueta enfocada
+            selectionColors = TextSelectionColors( // <- Cambia color de selección
+                handleColor = Principal,     // la "gota"
+                backgroundColor = Color.LightGray // fondo del texto seleccionado
+            )
         ),
         singleLine = true
     )

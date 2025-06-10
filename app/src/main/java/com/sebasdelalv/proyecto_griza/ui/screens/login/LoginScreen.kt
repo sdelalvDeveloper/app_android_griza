@@ -15,6 +15,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -35,6 +36,7 @@ import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
@@ -157,8 +159,8 @@ fun LoginScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

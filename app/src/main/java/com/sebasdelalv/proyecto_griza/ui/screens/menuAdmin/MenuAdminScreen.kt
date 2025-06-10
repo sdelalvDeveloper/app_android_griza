@@ -26,10 +26,13 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -52,6 +55,7 @@ import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
 import kotlinx.coroutines.delay
 
@@ -146,7 +150,10 @@ fun MenuAdminScreen(
                         modifier = Modifier
                             .padding(end = screenWidth * 0.05f)
                     )
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Principal
+                )
             )
         },
         bottomBar = {
@@ -157,6 +164,11 @@ fun MenuAdminScreen(
             )
         }
     ) { innerPadding ->
+        HorizontalDivider(
+            color = Color.Black,
+            thickness = (screenSizes * 0.004f).dp,
+            modifier = Modifier.padding(innerPadding)
+        )
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -252,8 +264,8 @@ fun MenuAdminScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

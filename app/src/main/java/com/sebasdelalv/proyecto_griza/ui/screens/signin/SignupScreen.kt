@@ -22,6 +22,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,6 +42,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.R
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.PassswordInput
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
@@ -193,8 +195,8 @@ fun SignupScreen(navigateToLogin: () -> Unit) {
             title = { Text(dialogTitle.toString()) },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

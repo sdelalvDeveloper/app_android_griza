@@ -7,6 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDisponible
 
 @Composable
 fun ReservarTallerDialog(
@@ -23,12 +26,12 @@ fun ReservarTallerDialog(
                 onReservar(taller)
                 onDismiss()
             }) {
-                Text("Aceptar")
+                Text("Aceptar", color = VerdeDialog)
             }
         },
         dismissButton = {
             TextButton(onClick = onDismiss) {
-                Text("Cancelar", color = Color(0xFFF44336))
+                Text("Cancelar", color = RojoAlert)
             }
         }
     )

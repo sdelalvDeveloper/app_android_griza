@@ -27,6 +27,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.TextInput
 
 @Composable
@@ -145,13 +147,17 @@ fun ModificarTalleresScreen(
                         }
                     }
                 ) {
-                    Text(if(tipoScreen == "modificar") "Actualizar" else "Registrar")
+                    Text(
+                        text = if(tipoScreen == "modificar") "Actualizar" else "Registrar",
+                        color = VerdeDialog
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { viewModel.closeConfirmDialog() }) {
                     Text("Cancelar",
-                        color = Color(0xFFF44336))
+                        color = RojoAlert
+                    )
                 }
             }
         )
@@ -163,8 +169,8 @@ fun ModificarTalleresScreen(
             title = { Text(dialogTitle.toString()) },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

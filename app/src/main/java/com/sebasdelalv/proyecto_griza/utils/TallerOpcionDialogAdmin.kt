@@ -7,6 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 
 @Composable
 fun TallerOpcionDialogAdmin(
@@ -24,7 +26,7 @@ fun TallerOpcionDialogAdmin(
                 onModificar(taller)
                 onDismiss()
             }) {
-                Text("Modificar")
+                Text("Modificar", color = VerdeDialog)
             }
         },
         dismissButton = {
@@ -32,7 +34,7 @@ fun TallerOpcionDialogAdmin(
                 onEliminar(taller)
                 onDismiss()
             }) {
-                Text("Eliminar", color = Color.Red)
+                Text("Eliminar", color = RojoAlert)
             }
         }
     )

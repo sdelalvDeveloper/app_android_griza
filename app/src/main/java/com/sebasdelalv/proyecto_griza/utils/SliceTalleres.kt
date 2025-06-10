@@ -35,6 +35,9 @@ import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
 import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.domain.model.TallerResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDisponible
 
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
@@ -96,7 +99,7 @@ fun SliceTalleres(
 
                     Text(
                         text = taller.estado,
-                        color = if (taller.estado == "DISPONIBLE") Color(0xFF4CAF50) else Color(0xFFF44336),
+                        color = if (taller.estado == "DISPONIBLE") VerdeDisponible else RojoAlert,
                         fontSize = (screenSizes * 0.03f).sp,
                         fontWeight = FontWeight.Medium,
                         fontFamily = Quicksand
@@ -118,7 +121,7 @@ fun SliceTalleres(
                     onReservar(taller)
                     tallerSeleccionado = null
                 }) {
-                    Text("Aceptar")
+                    Text("Aceptar", color = VerdeDialog)
                 }
             },
             dismissButton = {

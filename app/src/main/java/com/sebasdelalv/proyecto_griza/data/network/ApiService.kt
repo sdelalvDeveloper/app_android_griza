@@ -77,7 +77,7 @@ interface ApiService {
         @Header("Authorization") token: String,
         @Path("username") username: String,
         @Path("password") password: String,
-    ): Response<RegisterUserResponse?>
+    ): Response<Void>
 
     @POST("usuarios/updatePassword")
     suspend fun updatePassword(

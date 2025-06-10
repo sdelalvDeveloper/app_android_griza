@@ -11,6 +11,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -28,6 +29,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.InfoItem
 
 @Composable
@@ -85,8 +87,8 @@ fun InfoPersonalScreen(
             title = { Text(dialogTitle.toString()) },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

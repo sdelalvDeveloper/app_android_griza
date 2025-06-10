@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
@@ -45,6 +47,7 @@ import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.PerfilActionRow
 import com.sebasdelalv.proyecto_griza.utils.TextStyleTaller
@@ -126,7 +129,10 @@ fun PerfilScreen(
                             .size((screenWidth * 0.15f).dp)
                             .padding(end = (screenWidth * 0.05f).dp)
                     )
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Principal
+                )
             )
         },
         bottomBar = {
@@ -178,19 +184,19 @@ fun PerfilScreen(
                                 text = fechaDesglosada.dia,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenWidth * 0.03f).sp
+                                fontSize = (screenWidth * 0.035f).sp
                             )
                             Text(
                                 text = fechaDesglosada.mes,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenWidth * 0.03f).sp
+                                fontSize = (screenWidth * 0.035f).sp
                             )
                             Text(
                                 text = fechaDesglosada.hora,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenWidth * 0.03f).sp
+                                fontSize = (screenWidth * 0.035f).sp
                             )
                         }
                     }
@@ -265,8 +271,8 @@ fun PerfilScreen(
             title = { Text(dialogTitle.toString()) },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

@@ -1,6 +1,7 @@
 package com.sebasdelalv.proyecto_griza.ui.screens.reservas
 
 import android.os.Build
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -19,6 +20,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -40,6 +42,8 @@ import com.sebasdelalv.proyecto_griza.data.mapper.capitalizeFirst
 import com.sebasdelalv.proyecto_griza.domain.model.ReservaResult
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.RojoAlert
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.ColumnReservas
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.MyFooterAdmin
@@ -64,6 +68,16 @@ fun ReservasScreen(
     val isDialogOpen by viewModel.isDialogOpen.collectAsState()
 
     var reservaSeleccionada by remember { mutableStateOf<ReservaResult?>(null) }
+
+    val toastMessage by viewModel.toastMessage.collectAsState()
+
+    // Mostrar Toast
+    LaunchedEffect(toastMessage) {
+        toastMessage?.let {
+            Toast.makeText(context, it, Toast.LENGTH_SHORT).show()
+            viewModel.toastShown()
+        }
+    }
 
     // Observa cambios de ciclo de vida (como volver a esta pantalla)
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -149,14 +163,14 @@ fun ReservasScreen(
                         reservaSeleccionada = null
                     }
                 ) {
-                    Text("Eliminar", color = Color.Red)
+                    Text("Eliminar", color = RojoAlert)
                 }
             },
             dismissButton = {
                 TextButton(
                     onClick = { reservaSeleccionada = null }
                 ) {
-                    Text("Salir")
+                    Text("Salir", color = VerdeDialog)
                 }
             }
         )
@@ -168,8 +182,8 @@ fun ReservasScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )

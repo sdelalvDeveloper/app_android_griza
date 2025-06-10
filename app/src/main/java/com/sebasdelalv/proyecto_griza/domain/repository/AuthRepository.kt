@@ -11,7 +11,7 @@ interface AuthRepository {
 
     suspend fun get(username: String, token: String): Result<RegisterResult>
 
-    suspend fun delete(token: String, username: String, password: String): Result<RegisterResult>
+    suspend fun delete(token: String, username: String, password: String): Result<Unit>
 
     suspend fun update(token: String, usuario: UpdatePasswordRequest): Result<Boolean>
 

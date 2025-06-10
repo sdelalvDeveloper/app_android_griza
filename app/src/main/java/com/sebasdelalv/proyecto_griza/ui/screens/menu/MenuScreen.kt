@@ -5,10 +5,12 @@ import android.widget.Toast
 import androidx.activity.compose.BackHandler
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -26,10 +28,13 @@ import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -41,8 +46,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,6 +62,7 @@ import com.sebasdelalv.proyecto_griza.data.local.SessionManager
 import com.sebasdelalv.proyecto_griza.data.mapper.toFechaDesglosada
 import com.sebasdelalv.proyecto_griza.ui.theme.Principal
 import com.sebasdelalv.proyecto_griza.ui.theme.Quicksand
+import com.sebasdelalv.proyecto_griza.ui.theme.VerdeDialog
 import com.sebasdelalv.proyecto_griza.utils.MyFooter
 import com.sebasdelalv.proyecto_griza.utils.SliceImages
 import com.sebasdelalv.proyecto_griza.utils.SliceTalleres
@@ -145,7 +153,14 @@ fun MenuScreen(
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
-                title = { Text(sessionManager.getUsername().toString()) },
+                title = {
+                    Image(
+                    painter = painterResource(id = R.drawable.griza_negro_sin_fondo),
+                    contentDescription = "Logo griza estudio",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier
+                        .size((screenSizes * 0.4f).dp)
+                ) },
                 navigationIcon = {
                     Box {
                         IconButton(
@@ -195,7 +210,10 @@ fun MenuScreen(
                             .size(screenWidth * 0.15f)
                             .padding(end = screenWidth * 0.05f)
                     )
-                }
+                },
+                colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
+                    containerColor = Principal
+                )
             )
         },
         bottomBar = {
@@ -206,6 +224,12 @@ fun MenuScreen(
             )
         }
     ) { innerPadding ->
+        HorizontalDivider(
+            color = Color.Black,
+            thickness = (screenSizes * 0.004f).dp,
+            modifier = Modifier.padding(innerPadding)
+        )
+        Spacer(modifier = Modifier.height((screenSizes * 0.004f).dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -247,19 +271,19 @@ fun MenuScreen(
                                 text = fechaDesglosada.dia,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenSizes * 0.03f).sp
+                                fontSize = (screenSizes * 0.035f).sp
                             )
                             Text(
                                 text = fechaDesglosada.mes,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenSizes * 0.03f).sp
+                                fontSize = (screenSizes * 0.035f).sp
                             )
                             Text(
                                 text = fechaDesglosada.hora,
                                 fontFamily = Quicksand,
                                 fontWeight = FontWeight.Bold,
-                                fontSize = (screenSizes * 0.03f).sp
+                                fontSize = (screenSizes * 0.035f).sp
                             )
                         }
                     }
@@ -294,8 +318,8 @@ fun MenuScreen(
             title = { Text("Error") },
             text = { Text(dialogMessage ?: "") },
             confirmButton = {
-                Button(onClick = { viewModel.closeErrorDialog() }) {
-                    Text("Aceptar")
+                TextButton(onClick = { viewModel.closeErrorDialog() }) {
+                    Text("Aceptar", color = VerdeDialog)
                 }
             }
         )
