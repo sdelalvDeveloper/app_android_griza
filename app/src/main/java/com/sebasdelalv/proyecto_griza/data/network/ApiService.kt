@@ -79,7 +79,7 @@ interface ApiService {
         @Path("password") password: String,
     ): Response<Void>
 
-    @POST("usuarios/updatePassword")
+    @PUT("usuarios/updatePassword")
     suspend fun updatePassword(
         @Header("Authorization") token: String,
         @Body usuario: UpdatePasswordRequest
